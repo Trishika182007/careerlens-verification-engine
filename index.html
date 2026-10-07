@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <meta content="mobile_tab" name="shell-type"/>
+  <title>CareerLens — AI Career Readiness Analyzer</title>
+
+  <!-- Google Fonts & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-surface-variant": "#45464d",
+            "on-primary-fixed": "#131b2e",
+            "error": "#ba1a1a",
+            "surface-dim": "#cbdbf5",
+            "outline": "#76777d",
+            "outline-variant": "#c6c6cd",
+            "tertiary-fixed": "#89f5e7",
+            "surface-container-lowest": "#ffffff",
+            "secondary-container": "#316bf3",
+            "background": "#f8f9ff",
+            "error-container": "#ffdad6",
+            "on-secondary-container": "#fefcff",
+            "secondary-fixed-dim": "#b4c5ff",
+            "primary": "#000000",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "surface-bright": "#f8f9ff",
+            "on-secondary-fixed": "#00174b",
+            "tertiary": "#000000",
+            "surface-container-low": "#eff4ff",
+            "on-surface": "#0b1c30",
+            "on-primary-fixed-variant": "#3f465c",
+            "primary-container": "#131b2e",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#7c839b",
+            "on-background": "#0b1c30",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eaf1ff",
+            "surface-tint": "#565e74",
+            "on-tertiary-fixed": "#00201d",
+            "surface-variant": "#d3e4fe",
+            "surface-container-highest": "#d3e4fe",
+            "on-tertiary-container": "#0c9488",
+            "primary-fixed-dim": "#bec6e0",
+            "on-error-container": "#93000a",
+            "surface-container": "#e5eeff",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "tertiary-container": "#00201d",
+            "secondary": "#0051d5",
+            "primary-fixed": "#dae2fd",
+            "surface-container-high": "#dce9ff",
+            "on-tertiary-fixed-variant": "#005049",
+            "on-secondary-fixed-variant": "#003ea8",
+            "surface": "#f8f9ff",
+            "inverse-primary": "#bec6e0",
+            "inverse-surface": "#213145",
+            "secondary-fixed": "#dbe1ff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "margin-mobile": "1rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Inter"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "code-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "headline-lg-mobile": ["26px", { lineHeight: "34px", letterSpacing: "-0.015em", fontWeight: "700" }],
+            "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.04em", fontWeight: "600" }],
+            "headline-sm": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "title-md": ["16px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "code-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }],
+            "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "600" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "display-lg": ["44px", { lineHeight: "52px", letterSpacing: "-0.03em", fontWeight: "700" }],
+            "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }]
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    @layer base {
+      html, body {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        overscroll-behavior: none;
+        min-height: max(884px, 100dvh);
+      }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+      .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Centered Mobile App Shell Container on Larger Desktops */
+    .app-shell {
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen">
+
+  <!-- ==================== TOP APP HEADER ==================== -->
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+    <div class="h-20 px-margin-mobile flex items-center justify-between gap-space-sm app-shell">
+      <div class="flex items-center gap-space-sm min-w-0">
+        <img alt="CareerLens Logo" class="h-8 w-auto object-contain cursor-pointer" onclick="navigateTo('profile-setup')" src="https://lh3.googleusercontent.com/aida/AEtjO1USpcpye9ZuwaIIsEUSpkku80FkUUOKEFyV_7BpEb_xPQ92UE-vA-L2EsmZz9XGsXsQl9le1L3GKt88jPhByn0PQp9d9_TXrBFJbiXFqy3KqAmW09pxg4FhnJmHbjaQmG6v1WuX5NDh-HvVzU7EoGMI5iB5mk-FhENHeJnLMDLFfX9k_Z3twYYr31lRWyoV-YV7anB6UAh2IHDTeLZ5W05VWCScffefMwUUCwidmA"/>
+        <div class="flex flex-col min-w-0">
+          <div class="flex items-center gap-space-xs">
+            <span class="font-title-md text-title-md text-on-surface truncate cursor-pointer" onclick="navigateTo('profile-setup')">CareerLens</span>
+            <span class="bg-surface-container-high text-secondary px-space-xs py-0.5 rounded-full font-label-sm text-label-sm uppercase tracking-wide">Placement 2025</span>
+          </div>
+          <span id="header-screen-title" class="font-label-sm text-label-sm text-on-surface-variant truncate">Profile Setup</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-xs shrink-0">
+        <button class="w-8 h-8 rounded-full bg-primary flex items-center justify-center hover:bg-on-surface transition-colors" title="Candidate Profile">
+          <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="flex flex-col relative w-full pt-20 pb-28 bg-surface px-margin-mobile app-shell">
+
+    <!-- SCREEN 1: PROFILE SETUP -->
+    <section id="view-profile-setup" class="view-panel space-y-space-md w-full">
+      <div class="relative overflow-hidden rounded-xl bg-surface-container p-space-md shadow-sm">
+        <div class="flex flex-col space-y-space-xs">
+          <div class="inline-flex items-center gap-space-xs self-start rounded-full bg-surface-container-high px-space-sm py-0.5 text-secondary">
+            <span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+            <span class="font-label-sm text-label-sm uppercase tracking-wider">AI Evidence Cross-Verification Engine</span>
+          </div>
+          <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Discover How Job-Ready You Really Are</h1>
+          <p class="font-body-md text-body-md text-on-surface-variant">Turn your scattered digital work into one verified career profile.</p>
+        </div>
+        <div class="mt-space-md flex items-center gap-space-xs rounded-lg bg-surface-container-lowest p-space-xs shadow-sm">
+          <div class="flex h-7 w-7 items-center justify-center rounded-full bg-secondary-container text-on-secondary-container">
+            <span class="material-symbols-outlined text-[16px]">school</span>
+          </div>
+          <div class="flex flex-1 items-center justify-between min-w-0 pr-space-xs">
+            <span class="font-label-sm text-label-sm text-on-surface truncate">Fall Placement Cohort 2025</span>
+            <span class="font-label-sm text-label-sm text-on-tertiary-container bg-surface-container-high px-space-xs py-0.5 rounded-full">Phase 1: Verification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Target Role Selector -->
+      <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm space-y-space-sm">
+        <div class="flex items-center justify-between">
+          <label class="font-title-md text-title-md text-on-surface flex items-center gap-space-xs" for="role-select">
+            <span class="material-symbols-outlined text-secondary text-[20px]">target</span>
+            Target Career Trajectory
+          </label>
+          <span class="rounded-full bg-surface-container-high px-space-xs py-0.5 font-label-sm text-label-sm text-secondary">
+            Benchmark: 14 Core Competencies
+          </span>
+        </div>
+        <div class="relative">
+          <select class="w-full appearance-none rounded-lg bg-surface-container-low px-space-md py-space-sm font-body-md text-body-md text-on-surface focus:outline-none focus:bg-surface-container cursor-pointer" id="role-select">
+            <option value="ml_engineer" selected>ML Engineer</option>
+            <option value="backend_developer">Backend Developer</option>
+            <option value="frontend_developer">Frontend Developer</option>
+            <option value="fullstack_developer">Full Stack Developer</option>
+            <option value="data_analyst">Data Analyst</option>
+            <option value="data_scientist">Data Scientist</option>
+            <option value="ui_ux_designer">UI/UX Designer</option>
+          </select>
+          <span class="pointer-events-none absolute right-3 top-2.5 material-symbols-outlined text-on-surface-variant">expand_more</span>
+        </div>
+        <div class="flex items-center gap-space-xs pt-1">
+          <span class="material-symbols-outlined text-on-tertiary-container text-[16px]">psychology</span>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Evaluating against 2,400+ Tier-1 hiring manager calibration datasets</p>
+        </div>
+      </div>
+
+      <!-- Primary Evidence Source (Resume) -->
+      <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm space-y-space-sm">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-secondary text-[20px]">description</span>
+            <h2 class="font-title-md text-title-md text-on-surface">Primary Evidence Source</h2>
+          </div>
+          <span class="rounded-full bg-error-container px-space-xs py-0.5 font-label-sm text-label-sm text-on-error-container">Required</span>
+        </div>
+
+        <!-- Hidden Native File Input -->
+        <input type="file" id="resume-file-input" accept=".pdf,.docx,.txt" class="hidden" />
+
+        <!-- Interactive Resume Upload / Replacement Card -->
+        <div id="resume-upload-zone" class="rounded-lg bg-surface-container-low p-space-md transition-all hover:bg-surface-container cursor-pointer border-2 border-transparent hover:border-secondary/20">
+          <div class="flex items-start justify-between gap-space-sm">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div id="resume-icon-badge" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-secondary text-on-secondary shadow-sm transition-transform">
+                <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+              </div>
+              <div class="min-w-0">
+                <h3 id="resume-filename" class="font-body-md text-body-md font-semibold text-on-surface truncate">Upload Candidate Resume (PDF)</h3>
+                <p id="resume-meta" class="font-body-sm text-body-sm text-on-surface-variant">PDF format required • Click or drop file</p>
+                <div id="resume-status" class="mt-1 flex items-center gap-1 text-on-tertiary-container">
+                  <span class="material-symbols-outlined text-[14px]">task_alt</span>
+                  <span id="resume-status-text" class="font-label-sm text-label-sm">No resume selected yet</span>
+                </div>
+              </div>
+            </div>
+            <button id="upload-resume-btn" aria-label="Upload / Replace Resume" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer" title="Upload new resume file" type="button">
+              <span class="material-symbols-outlined text-[18px]">upload_file</span>
+            </button>
+          </div>
+          <div class="mt-space-md grid grid-cols-2 gap-space-xs">
+            <div class="rounded-md bg-surface-container-lowest p-space-xs shadow-xs">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Projects Extracted</span>
+              <span id="resume-projects-count" class="font-title-md text-title-md text-on-surface">5 Industrial / Capstone</span>
+            </div>
+            <div class="rounded-md bg-surface-container-lowest p-space-xs shadow-xs">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Work Experience</span>
+              <span id="resume-exp-count" class="font-title-md text-title-md text-on-surface">18 Mos Internship</span>
+            </div>
+          </div>
+          <div class="mt-space-xs flex items-center justify-between text-[11px] text-on-surface-variant pt-1 border-t border-surface-container-high/40">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-secondary">cloud_upload</span> Click or drag PDF / DOCX here</span>
+            <span class="font-semibold text-secondary hover:underline">Upload / Replace</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Proof of Work Repositories -->
+      <div class="rounded-xl bg-surface-container-lowest p-space-md shadow-sm space-y-space-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-secondary text-[20px]">hub</span>
+            <h2 class="font-title-md text-title-md text-on-surface">Digital Proof of Work Profiles</h2>
+          </div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Independent Proof</span>
+        </div>
+        <div class="space-y-space-sm">
+          <!-- LinkedIn -->
+          <div class="rounded-lg bg-surface-container-low p-space-sm">
+            <div class="flex items-center justify-between mb-space-xs">
+              <label for="input-linkedin" class="font-label-md text-label-md text-on-surface flex items-center gap-space-xs cursor-pointer">
+                <span class="material-symbols-outlined text-[16px] text-secondary">badge</span>
+                LinkedIn Profile URL
+              </label>
+              <span class="rounded-full bg-surface-container px-space-xs py-0.5 font-label-sm text-label-sm text-on-surface-variant">Optional</span>
+            </div>
+            <div class="flex items-center rounded bg-surface-container-lowest px-space-sm py-1.5 shadow-xs">
+              <input type="url" id="input-linkedin" name="linkedin_url" placeholder="https://linkedin.com/in/username" class="w-full bg-transparent font-code-sm text-code-sm text-on-surface focus:outline-none placeholder:text-on-surface-variant/50" />
+              <span class="material-symbols-outlined text-on-surface-variant text-[16px]">link</span>
+            </div>
+          </div>
+
+          <!-- GitHub -->
+          <div class="rounded-lg bg-surface-container-low p-space-sm">
+            <div class="flex items-center justify-between mb-space-xs">
+              <label for="input-github" class="font-label-md text-label-md text-on-surface flex items-center gap-space-xs cursor-pointer">
+                <span class="material-symbols-outlined text-[16px] text-secondary">code</span>
+                GitHub Profile / Repository URL
+              </label>
+              <span class="rounded-full bg-surface-container-high px-space-xs py-0.5 font-label-sm text-label-sm text-secondary font-medium">Recommended</span>
+            </div>
+            <div class="flex items-center rounded bg-surface-container-lowest px-space-sm py-1.5 shadow-xs">
+              <input type="url" id="input-github" name="github_url" placeholder="https://github.com/username" class="w-full bg-transparent font-code-sm text-code-sm text-on-surface focus:outline-none placeholder:text-on-surface-variant/50" />
+              <span class="material-symbols-outlined text-secondary text-[16px]">sync</span>
+            </div>
+          </div>
+
+          <!-- LeetCode -->
+          <div class="rounded-lg bg-surface-container-low p-space-sm">
+            <div class="flex items-center justify-between mb-space-xs">
+              <label for="input-leetcode" class="font-label-md text-label-md text-on-surface flex items-center gap-space-xs cursor-pointer">
+                <span class="material-symbols-outlined text-[16px] text-secondary">terminal</span>
+                LeetCode Profile URL
+              </label>
+              <span class="rounded-full bg-surface-container px-space-xs py-0.5 font-label-sm text-label-sm text-on-surface-variant">Optional</span>
+            </div>
+            <div class="flex items-center rounded bg-surface-container-lowest px-space-sm py-1.5 shadow-xs">
+              <input type="url" id="input-leetcode" name="leetcode_url" placeholder="https://leetcode.com/u/username" class="w-full bg-transparent font-code-sm text-code-sm text-on-surface focus:outline-none placeholder:text-on-surface-variant/50" />
+              <span class="material-symbols-outlined text-secondary text-[16px]">check_circle</span>
+            </div>
+          </div>
+
+          <!-- Figma -->
+          <div class="rounded-lg bg-surface-container-low p-space-sm">
+            <div class="flex items-center justify-between mb-space-xs">
+              <label for="input-figma" class="font-label-md text-label-md text-on-surface flex items-center gap-space-xs cursor-pointer">
+                <span class="material-symbols-outlined text-[16px] text-secondary">draw</span>
+                Figma Portfolio / Project URL
+              </label>
+              <span class="rounded-full bg-surface-container px-space-xs py-0.5 font-label-sm text-label-sm text-on-surface-variant">Optional</span>
+            </div>
+            <div class="flex items-center rounded bg-surface-container-lowest px-space-sm py-1.5 shadow-xs">
+              <input type="url" id="input-figma" name="figma_url" placeholder="https://figma.com/@username" class="w-full bg-transparent font-code-sm text-code-sm text-on-surface focus:outline-none placeholder:text-on-surface-variant/50" />
+              <span class="material-symbols-outlined text-secondary text-[16px]">palette</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Guarantee -->
+      <div class="rounded-xl bg-surface-container p-space-md space-y-space-sm shadow-sm">
+        <div class="flex items-start gap-space-sm">
+          <div class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface-container-highest text-secondary">
+            <span class="material-symbols-outlined text-[16px]">gavel</span>
+          </div>
+          <div class="space-y-0.5">
+            <h4 class="font-label-md text-label-md text-on-surface">Strict Verification Guarantee</h4>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">
+              CareerLens only uses submitted evidence to evaluate skills. Missing evidence is marked <span class="font-semibold text-on-surface">Unverified</span>, not False.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="space-y-space-sm pt-space-xs">
+        <button class="w-full h-12 rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center gap-space-xs shadow-md transition-all active:scale-[0.99] hover:bg-on-surface cursor-pointer" id="analyze-btn" type="button">
+          <span class="material-symbols-outlined text-[20px] text-tertiary-fixed">auto_awesome</span>
+          <span>Analyze My Career Profile</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+        <div class="flex items-center justify-center gap-space-xs py-1 text-center">
+          <span class="material-symbols-outlined text-secondary text-[16px]">analytics</span>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">
+            142,000+ Profiles Benchmarked across Tier-1 Tech &amp; Placement Drives
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: PROFILE ANALYSIS -->
+    <section id="view-profile-analysis" class="view-panel hidden space-y-space-lg w-full">
+      <!-- Header Section -->
+      <div class="flex flex-col space-y-space-xs pt-space-sm">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container-high text-secondary font-label-sm text-label-sm uppercase tracking-wider">
+            <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Diagnostic Complete
+          </span>
+          <span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-on-tertiary-container">verified</span>
+            Signal Index: <span id="screen2-signal-value">--%</span>
+          </span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Your Unified Career Profile</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">Aggregated signals from 5 connected platforms benchmarked for <span class="target-role-label font-medium text-on-surface">Machine Learning Engineer</span></p>
+      </div>
+
+      <!-- KPI Metric Matrix -->
+      <div class="grid grid-cols-2 gap-space-sm">
+        <!-- Target Role Card -->
+        <div class="col-span-2 bg-primary-container text-on-primary rounded-xl p-space-md shadow-sm relative overflow-hidden">
+          <div class="flex items-start justify-between relative z-10">
+            <div>
+              <span class="font-label-sm text-label-sm uppercase tracking-wide text-on-primary-container">Target Placement Benchmark</span>
+              <div class="font-headline-sm text-headline-sm text-on-primary mt-0.5 target-role-label">Machine Learning Engineer</div>
+              <div class="flex items-center gap-space-xs mt-1">
+                <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-surface-container-highest/20 font-code-sm text-code-sm text-primary-fixed">Placement Tier 1</span>
+                <span class="text-on-primary-container font-body-sm text-body-sm">• Institutional Match: <span id="screen2-institutional-score">--%</span></span>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-surface-container-highest/10 flex items-center justify-center text-primary-fixed">
+              <span class="material-symbols-outlined text-[24px]">model_training</span>
+            </div>
+          </div>
+          <!-- Background SVG -->
+          <svg class="absolute -right-4 -bottom-6 w-32 h-32 opacity-10 text-on-primary pointer-events-none" fill="currentColor" viewbox="0 0 100 100">
+            <circle cx="50" cy="50" fill="none" r="40" stroke="currentColor" stroke-width="4"></circle>
+            <path d="M50 10 L50 90 M10 50 L90 50" stroke="currentColor" stroke-width="4"></path>
+          </svg>
+        </div>
+
+        <!-- Metric 1: Sources -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Sources Analyzed</span>
+            <span class="material-symbols-outlined text-secondary text-[18px]">hub</span>
+          </div>
+          <div class="mt-2">
+            <div class="flex items-baseline gap-1">
+              <span id="screen2-sources-analyzed" class="font-headline-md text-headline-md text-on-surface">--</span>
+              <span class="font-body-md text-body-md text-on-surface-variant">/ 5</span>
+            </div>
+            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+              <div id="screen2-sources-bar" class="bg-secondary h-full rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric 2: Consistency -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Consistency Signal</span>
+            <span class="material-symbols-outlined text-on-tertiary-container text-[18px]">stacked_line_chart</span>
+          </div>
+          <div class="mt-2">
+            <div class="flex items-baseline gap-1">
+              <span id="screen2-consistency-score" class="font-headline-md text-headline-md text-on-surface">--%</span>
+              <span id="screen2-consistency-badge" class="font-label-sm text-label-sm text-on-tertiary-container">Pending</span>
+            </div>
+            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+              <div id="screen2-consistency-bar" class="bg-on-tertiary-container h-full rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric 3: Skills Detected -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+          <div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant block">Skills Detected</span>
+            <span id="screen2-skills-detected" class="font-headline-sm text-headline-sm text-on-surface">--</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant block">Across 6 modules</span>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+            <span class="material-symbols-outlined text-[20px]">psychology</span>
+          </div>
+        </div>
+
+        <!-- Metric 4: Projects Detected -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+          <div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant block">Projects Logged</span>
+            <span id="screen2-projects-logged" class="font-headline-sm text-headline-sm text-on-surface">--</span>
+            <span class="font-body-sm text-body-sm text-on-surface-variant block">Repos &amp; live demos</span>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+            <span class="material-symbols-outlined text-[20px]">folder_open</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connected Badges Stream -->
+      <div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-1">
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> Resume
+        </span>
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> GitHub
+        </span>
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> LeetCode
+        </span>
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span> Figma
+        </span>
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-secondary"></span> LinkedIn
+        </span>
+        <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest shadow-sm text-on-surface font-label-sm text-label-sm flex items-center gap-1.5 shrink-0">
+          <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> Portfolio
+        </span>
+      </div>
+
+      <!-- Source Breakdown Cards -->
+      <div class="space-y-space-md">
+        <div class="flex items-center justify-between">
+          <h2 class="font-title-md text-title-md text-on-surface tracking-tight">Source Verification Stream</h2>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Live Audit Feed</span>
+        </div>
+
+        <!-- 1. Resume Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm transition-all">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">description</span>
+              </div>
+              <div>
+                <h3 class="font-title-md text-title-md text-on-surface">Curriculum Vitae / Resume</h3>
+                <span id="screen2-resume-meta" class="font-body-sm text-body-sm text-on-surface-variant">Parsed 2h ago • PDF v2.4</span>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-surface-container-low text-on-tertiary-container font-label-sm text-label-sm uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span> Analyzed
+            </span>
+          </div>
+          <div class="bg-surface-container-low rounded-lg p-space-sm space-y-space-xs text-body-sm font-body-sm">
+            <div class="flex items-start justify-between">
+              <span class="text-on-surface-variant font-label-sm text-label-sm">Academic Track</span>
+              <span class="text-on-surface font-code-sm text-code-sm text-right">B.Tech CS (2021-2025) • GPA 3.84</span>
+            </div>
+            <div class="flex items-start justify-between">
+              <span class="text-on-surface-variant font-label-sm text-label-sm">Role History</span>
+              <span class="text-on-surface text-right truncate">ML Intern (AI Studio, 6mo) • DSA TA</span>
+            </div>
+            <div class="flex items-start justify-between">
+              <span class="text-on-surface-variant font-label-sm text-label-sm">Key Builds</span>
+              <span class="text-on-surface text-right truncate">Image Classifier, SQL ETL Pipeline</span>
+            </div>
+          </div>
+          <div>
+            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider block mb-1.5">Extracted Competency Claims</span>
+            <div id="screen2-claimed-skills-list" class="flex flex-wrap gap-1">
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Python</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Machine Learning</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Deep Learning</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">SQL</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Docker</span>
+              <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">React</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. GitHub Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">terminal</span>
+              </div>
+              <div>
+                <h3 class="font-title-md text-title-md text-on-surface">GitHub Workstream</h3>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">@student-dev • Active sync</span>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-surface-container-low text-on-tertiary-container font-label-sm text-label-sm uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span> Connected
+            </span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+              <span>Language Breakdown</span>
+              <span>420 Commits (12 mo)</span>
+            </div>
+            <div class="flex h-2 w-full rounded-full overflow-hidden bg-surface-container-high">
+              <div class="bg-secondary" style="width: 62%" title="Python 62%"></div>
+              <div class="bg-secondary-fixed-dim" style="width: 21%" title="TypeScript 21%"></div>
+              <div class="bg-on-tertiary-container" style="width: 12%" title="C++ 12%"></div>
+              <div class="bg-outline" style="width: 5%" title="SQL 5%"></div>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant pt-0.5">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span>Python 62%</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></span>TS 21%</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>C++ 12%</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-outline"></span>SQL 5%</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-space-xs pt-1">
+            <div class="bg-surface-container-low rounded-lg p-space-sm">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Repositories</span>
+              <span class="font-title-md text-title-md text-on-surface">24 Public</span>
+            </div>
+            <div class="bg-surface-container-low rounded-lg p-space-sm">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Recency Signal</span>
+              <span class="font-title-md text-title-md text-on-surface">3 Days Ago</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. LeetCode Card -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">code_blocks</span>
+              </div>
+              <div>
+                <h3 class="font-title-md text-title-md text-on-surface">LeetCode &amp; DSA Ledger</h3>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Contest Rating: 1,842 (Top 8.4%)</span>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 px-space-sm py-0.5 rounded-full bg-surface-container-low text-on-tertiary-container font-label-sm text-label-sm uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[14px]">check_circle</span> Connected
+            </span>
+          </div>
+          <div class="flex items-center justify-between bg-surface-container-low rounded-lg p-space-sm">
+            <div class="text-center flex-1">
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Total Solved</span>
+              <span class="font-headline-sm text-headline-sm text-on-surface">312</span>
+            </div>
+            <div class="w-px h-8 bg-surface-container-high"></div>
+            <div class="text-center flex-1">
+              <span class="font-label-sm text-label-sm text-error uppercase block">Hard</span>
+              <span class="font-title-md text-title-md text-error">74</span>
+            </div>
+            <div class="w-px h-8 bg-surface-container-high"></div>
+            <div class="text-center flex-1">
+              <span class="font-label-sm text-label-sm text-secondary uppercase block">Medium</span>
+              <span class="font-title-md text-title-md text-secondary">168</span>
+            </div>
+            <div class="w-px h-8 bg-surface-container-high"></div>
+            <div class="text-center flex-1">
+              <span class="font-label-sm text-label-sm text-on-tertiary-container uppercase block">Easy</span>
+              <span class="font-title-md text-title-md text-on-tertiary-container">70</span>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-1 items-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant mr-1">Verified Domains:</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Dynamic Programming</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Graph Theory</span>
+            <span class="px-2 py-0.5 rounded bg-surface-container text-on-surface font-code-sm text-code-sm">Trees</span>
+          </div>
+        </div>
+
+        <!-- 4, 5, 6: Figma, LinkedIn, Portfolio Combined -->
+        <div class="grid grid-cols-1 gap-space-sm">
+          <!-- Figma -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">design_services</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-space-xs">
+                  <h3 class="font-title-md text-title-md text-on-surface">Figma &amp; Design Hub</h3>
+                  <span class="px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm">UI/UX</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">4 systems • Verified ML Dashboard wireframes</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+          </div>
+
+          <!-- LinkedIn -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-space-xs">
+                  <h3 class="font-title-md text-title-md text-on-surface">LinkedIn Institutional</h3>
+                  <span class="px-1.5 py-0.2 rounded bg-surface-container-high text-secondary font-label-sm text-label-sm">Verified</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">3 recommendations • Dean’s List honors endorsed</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[20px]">verified_user</span>
+          </div>
+
+          <!-- Personal Portfolio -->
+          <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-space-sm">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-on-surface">
+                <span class="material-symbols-outlined text-[20px]">language</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-space-xs">
+                  <h3 class="font-title-md text-title-md text-on-surface">Personal Portfolio</h3>
+                  <span class="px-1.5 py-0.2 rounded bg-surface-container-high text-on-tertiary-container font-label-sm text-label-sm">Live Build</span>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Interactive demo showcase &amp; model inference server</p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-on-tertiary-container text-[20px]">check_circle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detected Skill Profile Section -->
+      <div class="space-y-space-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-title-md text-title-md text-on-surface tracking-tight">Detected Skill Profile</h2>
+            <span class="font-body-sm text-body-sm text-on-surface-variant">Preliminary readiness tiers normalized by ML model</span>
+          </div>
+          <span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface px-2 py-0.5 rounded-full">28 Total</span>
+        </div>
+
+        <!-- Advanced -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-on-tertiary-container uppercase tracking-wide flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+              Advanced (Proven Multi-Source Evidence)
+            </span>
+            <span class="font-code-sm text-code-sm text-on-surface-variant">Tier 1 Match</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Python</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-secondary">62% codebase</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">SQL</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-surface-variant">ETL Pipeline</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">DSA</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-tertiary-container">312 Solved</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Intermediate -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wide flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-secondary"></span>
+              Intermediate (Moderate Corroboration)
+            </span>
+            <span class="font-code-sm text-code-sm text-on-surface-variant">Tier 2 Match</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Machine Learning</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-surface-variant">Scikit/PyTorch</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">React</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-surface-variant">Portfolio GUI</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Data Analysis</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-surface-variant">Pandas/NumPy</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Git</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container-high text-on-surface-variant">420 Commits</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beginner -->
+        <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-outline uppercase tracking-wide flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-outline"></span>
+              Beginner / Preliminary (Single-Source Claims)
+            </span>
+            <span class="font-code-sm text-code-sm text-error">Gap Vulnerability</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Deep Learning</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container text-outline">Resume only</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">UI/UX</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container text-outline">Figma mock</span>
+            </div>
+            <div class="px-space-sm py-1.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+              <span class="font-body-md text-body-md text-on-surface font-medium">Docker</span>
+              <span class="font-code-sm text-code-sm px-1.5 rounded bg-surface-container text-outline">Unverified repo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidence Note -->
+      <div class="bg-surface-container-low rounded-xl p-space-md space-y-space-xs">
+        <div class="flex items-center gap-2 text-secondary">
+          <span class="material-symbols-outlined text-[20px]">rule_folder</span>
+          <span class="font-title-md text-title-md">Confidence Calibration Index: 94.2%</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">
+          Cross-validation algorithm scored this profile with 94.2% semantic integrity. Claims marked as preliminary lack verifiable artifact commits or contest telemetry and will be flagged during campus placement drives.
+        </p>
+      </div>
+
+      <!-- Action Hub -->
+      <div class="pt-space-xs pb-space-lg flex flex-col gap-space-sm">
+        <button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3.5 px-space-md rounded-xl shadow-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2 active:scale-[0.99] cursor-pointer" id="view-evidence-cta" type="button">
+          <span>View Evidence Verification</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+        <div class="flex items-center justify-center gap-4 text-center">
+          <button id="force-sync-btn" class="font-label-sm text-label-sm text-secondary hover:underline flex items-center gap-1 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[14px]">sync</span> Force Re-sync
+          </button>
+          <span class="text-on-surface-variant text-label-sm">•</span>
+          <button id="export-json-btn" class="font-label-sm text-label-sm text-on-surface-variant hover:underline flex items-center gap-1 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-[14px]">file_download</span> Export Analytics JSON
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: EVIDENCE VERIFICATION -->
+    <section id="view-evidence-verification" class="view-panel hidden flex flex-col gap-space-lg w-full">
+      <!-- Header Section -->
+      <div class="flex flex-col gap-space-xs">
+        <div class="flex items-center gap-space-xs">
+          <span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm uppercase tracking-wide">Audit &amp; Validation</span>
+          <span class="text-on-surface-variant font-label-sm text-label-sm">Updated 14 mins ago</span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight">Claim vs Evidence</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">See which resume claims are supported by your actual work.</p>
+      </div>
+
+      <!-- Evidence Coverage & Metrics Card -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+        <div class="flex items-center justify-between gap-space-sm">
+          <div class="flex flex-col">
+            <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Overall Corroboration</span>
+            <div class="flex items-baseline gap-space-xs">
+              <span id="evidence-corroboration-score" class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold">--%</span>
+              <span id="evidence-corroboration-badge" class="font-label-md text-label-md text-on-tertiary-container font-semibold">Pending Audit</span>
+            </div>
+          </div>
+          <!-- Circular Gauge -->
+          <div class="relative w-14 h-14 flex items-center justify-center shrink-0">
+            <svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+              <path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+              <path class="text-secondary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" id="evidence-gauge-path" stroke-dasharray="0, 100" stroke-linecap="round" stroke-width="3.5"></path>
+            </svg>
+            <span id="evidence-gauge-text" class="absolute font-label-sm text-label-sm text-on-surface font-bold">--%</span>
+          </div>
+        </div>
+
+        <!-- Metric Breakdown -->
+        <div class="grid grid-cols-3 gap-space-xs pt-space-xs">
+          <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col items-center text-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Verified</span>
+            <span id="count-verified" class="font-title-md text-title-md font-bold text-on-surface">0</span>
+          </div>
+          <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col items-center text-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Partial</span>
+            <span id="count-partial" class="font-title-md text-title-md font-bold text-on-surface">0</span>
+          </div>
+          <div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col items-center text-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Unverified</span>
+            <span id="count-unverified" class="font-title-md text-title-md font-bold text-on-surface">0</span>
+          </div>
+        </div>
+
+        <!-- Note -->
+        <div class="bg-surface-container-low rounded-lg p-space-sm flex items-start gap-space-sm">
+          <span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5" style="font-variation-settings: 'FILL' 1;">info</span>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            <strong>Auditor Note:</strong> Unverified means insufficient submitted evidence — it does not mean the candidate lacks the skill.
+          </p>
+        </div>
+      </div>
+
+      <!-- Filter Pill Tabs -->
+      <div class="flex flex-col gap-space-sm">
+        <div class="flex items-center justify-between">
+          <span class="font-title-md text-title-md text-on-surface">Assessed Competencies</span>
+          <span class="font-code-sm text-code-sm text-on-surface-variant">28 Total</span>
+        </div>
+        <div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5" id="evidence-filter-container">
+          <button class="filter-btn h-9 px-space-md rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap shadow-sm transition-colors cursor-pointer" data-filter="all" onclick="setEvidenceFilter('all')">
+            <span id="filter-all-label">All (0)</span>
+          </button>
+          <button class="filter-btn h-9 px-space-md rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer" data-filter="verified" onclick="setEvidenceFilter('verified')">
+            <span class="material-symbols-outlined text-[16px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">verified</span> <span id="filter-verified-label">Verified (0)</span>
+          </button>
+          <button class="filter-btn h-9 px-space-md rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer" data-filter="partial" onclick="setEvidenceFilter('partial')">
+            <span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">warning</span> <span id="filter-partial-label">Partial (0)</span>
+          </button>
+          <button class="filter-btn h-9 px-space-md rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap transition-colors flex items-center gap-1 cursor-pointer" data-filter="unverified" onclick="setEvidenceFilter('unverified')">
+            <span class="material-symbols-outlined text-[16px] text-outline">radio_button_unchecked</span> <span id="filter-unverified-label">Unverified (0)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Evidence Skill Rows List -->
+      <div class="flex flex-col gap-space-sm" id="skills-list">
+        <!-- Row 1: Python -->
+        <div class="skill-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm cursor-pointer transition-colors border-2 border-secondary/20 bg-surface-container-low" data-skill-status="verified" id="row-python" onclick="selectSkill('python')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-title-md text-title-md text-on-surface font-semibold">Python</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Resume: Advanced</span>
+            </div>
+            <span class="px-space-xs py-0.5 rounded-full bg-tertiary-container text-tertiary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1 truncate min-w-0 pr-space-xs">
+              <span class="material-symbols-outlined text-[16px] shrink-0">code_blocks</span>
+              <span class="truncate">GitHub (5 repos) + LeetCode</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="font-label-sm text-label-sm font-semibold text-on-surface">95%</span>
+              <span class="text-on-tertiary-container font-label-sm text-label-sm">Strong</span>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+            <div class="bg-on-tertiary-container h-full rounded-full" style="width: 95%;"></div>
+          </div>
+        </div>
+
+        <!-- Row 2: ML -->
+        <div class="skill-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm cursor-pointer transition-colors" data-skill-status="verified" id="row-ml" onclick="selectSkill('ml')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-title-md text-title-md text-on-surface font-semibold">Machine Learning</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Resume: Intermediate</span>
+            </div>
+            <span class="px-space-xs py-0.5 rounded-full bg-tertiary-container text-tertiary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1 truncate min-w-0 pr-space-xs">
+              <span class="material-symbols-outlined text-[16px] shrink-0">hub</span>
+              <span class="truncate">GitHub Project (PyTorch CV model)</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="font-label-sm text-label-sm font-semibold text-on-surface">88%</span>
+              <span class="text-on-tertiary-container font-label-sm text-label-sm">Strong</span>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+            <div class="bg-on-tertiary-container h-full rounded-full" style="width: 88%;"></div>
+          </div>
+        </div>
+
+        <!-- Row 3: SQL -->
+        <div class="skill-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm cursor-pointer transition-colors" data-skill-status="partial" id="row-sql" onclick="selectSkill('sql')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-title-md text-title-md text-on-surface font-semibold">SQL</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Resume: Intermediate</span>
+            </div>
+            <span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">warning</span> Partial
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1 truncate min-w-0 pr-space-xs">
+              <span class="material-symbols-outlined text-[16px] shrink-0">database</span>
+              <span class="truncate">GitHub Repo (Analytics query repo)</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="font-label-sm text-label-sm font-semibold text-on-surface">64%</span>
+              <span class="text-secondary font-label-sm text-label-sm">Moderate</span>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+            <div class="bg-secondary h-full rounded-full" style="width: 64%;"></div>
+          </div>
+        </div>
+
+        <!-- Row 4: Docker -->
+        <div class="skill-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm cursor-pointer transition-colors" data-skill-status="unverified" id="row-docker" onclick="selectSkill('docker')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-title-md text-title-md text-on-surface font-semibold">Docker</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Resume: Intermediate</span>
+            </div>
+            <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-outline font-label-sm text-label-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]">radio_button_unchecked</span> Unverified
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1 truncate min-w-0 pr-space-xs">
+              <span class="material-symbols-outlined text-[16px] shrink-0 text-outline">help_outline</span>
+              <span class="truncate italic">No supporting evidence detected</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="font-label-sm text-label-sm font-semibold text-outline">—</span>
+              <span class="text-outline font-label-sm text-label-sm">None</span>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+            <div class="bg-surface-dim h-full rounded-full" style="width: 8%;"></div>
+          </div>
+        </div>
+
+        <!-- Row 5: UI/UX -->
+        <div class="skill-row bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm cursor-pointer transition-colors" data-skill-status="verified" id="row-uiux" onclick="selectSkill('uiux')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-space-xs">
+              <span class="font-title-md text-title-md text-on-surface font-semibold">UI/UX</span>
+              <span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm">Resume: Beginner</span>
+            </div>
+            <span class="px-space-xs py-0.5 rounded-full bg-tertiary-container text-tertiary-fixed font-label-sm text-label-sm flex items-center gap-0.5">
+              <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+            </span>
+          </div>
+          <div class="flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1 truncate min-w-0 pr-space-xs">
+              <span class="material-symbols-outlined text-[16px] shrink-0">palette</span>
+              <span class="truncate">Figma Portfolio (2 live design systems)</span>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="font-label-sm text-label-sm font-semibold text-on-surface">85%</span>
+              <span class="text-on-tertiary-container font-label-sm text-label-sm">Strong</span>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+            <div class="bg-on-tertiary-container h-full rounded-full" style="width: 85%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dynamic Auditor Inspector Card -->
+      <div class="bg-primary-container text-on-primary rounded-xl p-space-md shadow-md flex flex-col gap-space-md transition-all" id="inspector-card">
+        <div class="flex items-start justify-between">
+          <div class="flex flex-col">
+            <div class="flex items-center gap-space-xs">
+              <span class="material-symbols-outlined text-secondary-fixed text-[18px]">biotech</span>
+              <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">Auditor Inspector</span>
+            </div>
+            <h2 class="font-headline-sm text-headline-sm text-on-primary mt-1" id="inspector-title">Python (Advanced)</h2>
+          </div>
+          <div class="px-space-sm py-1 rounded-full bg-tertiary-container text-tertiary-fixed font-label-sm text-label-sm flex items-center gap-1" id="inspector-strength-badge">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+            <span>95/100 Strong</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-space-sm bg-surface-container-lowest/10 rounded-lg p-space-sm">
+          <div class="flex flex-col">
+            <span class="font-label-sm text-label-sm text-on-primary-container">Corroborated Sources</span>
+            <p class="font-body-sm text-body-sm text-on-primary mt-0.5" id="inspector-sources">
+              GitHub Repositories (5 repos) &amp; LeetCode (180 Python submissions)
+            </p>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-sm text-label-sm text-on-primary-container">Key Project / Activity Evidence</span>
+            <p class="font-body-sm text-body-sm text-on-primary mt-0.5 font-medium" id="inspector-activity">
+              “vision-pipeline-core” (1,400+ lines of Python, PEP-8 compliant, tests with pytest)
+            </p>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-label-sm text-label-sm text-on-primary-container">Why This Counts As Evidence</span>
+            <p class="font-body-sm text-body-sm text-inverse-on-surface mt-0.5 leading-relaxed" id="inspector-rationale">
+              Demonstrates object-oriented Python, async concurrency, vectorized NumPy operations, and test coverage.
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between pt-space-xs">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-tertiary-fixed text-[18px]">verified_user</span>
+            <span class="font-body-sm text-body-sm text-inverse-on-surface" id="inspector-level">Estimated: <strong>Advanced</strong> (Tier 1 met)</span>
+          </div>
+          <button id="view-commits-btn" class="px-space-sm py-1 rounded-lg bg-surface-container-highest/20 hover:bg-surface-container-highest/30 text-on-primary font-label-sm text-label-sm flex items-center gap-1 transition-colors cursor-pointer" type="button">
+            <span>View Commits</span>
+            <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Verified Proof Artifacts Snapshot -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="material-symbols-outlined text-secondary text-[20px]">fact_check</span>
+            <h3 class="font-title-md text-title-md text-on-surface">Verified Proof Artifacts</h3>
+          </div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">3 Active Repos</span>
+        </div>
+        <div class="relative w-full h-32 rounded-lg overflow-hidden bg-surface-container-low flex items-center justify-center">
+          <img class="w-full h-full object-cover" data-alt="Screenshot of verified code commits and test outputs" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0YzyL3BrEllZx5es0ftnh7uoumi9GuFQl_3sg4YoidkaP4R263GpPR5UhLE0VyjE-5NYqFRcOHi9rcC9g5kPBmoTcRApPHAyo78PYO2AW8nDwuinzuy6fszJWlxFaXmWvx-mfgtPd_eyK7xN0DFqhUBDe8znzmI7skInuAsX9-6PcfJJEtNtdyfDDDY9UK7m5IwPOKIdISBJuup_i7Ft4J9rlz5KGjFlko1BGgA"/>
+          <div class="absolute inset-0 bg-primary/40 flex items-center justify-between px-space-md">
+            <div class="flex flex-col text-on-primary">
+              <span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary-fixed">Continuous Verification</span>
+              <span class="font-title-md text-title-md font-bold">1,842 lines audited</span>
+            </div>
+            <span class="px-space-sm py-1 rounded-full bg-surface-container-lowest/90 text-on-surface font-label-sm text-label-sm font-semibold">
+              Sha-256 Validated
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA Container -->
+      <div class="flex flex-col gap-space-xs pt-space-xs">
+        <button id="compare-target-role-btn" class="w-full h-12 rounded-xl bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs shadow-md transition-all cursor-pointer" type="button">
+          <span>Compare With Target Role</span>
+          <span class="material-symbols-outlined text-[18px]">trending_up</span>
+        </button>
+        <div class="flex items-center justify-center gap-1 text-center">
+          <span class="material-symbols-outlined text-outline text-[14px]">assured_workload</span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Benchmarked against Tier-1 ML Engineer hiring rubrics</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: ROLE READINESS DASHBOARD -->
+    <section id="view-role-readiness" class="view-panel hidden space-y-space-lg w-full">
+      <!-- Header -->
+      <div class="flex flex-col space-y-space-xs pt-space-xs">
+        <div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-secondary-container/10 w-fit">
+          <span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
+          <span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Placement Analytics Engine</span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Your Readiness for <span class="target-role-label">ML Engineer</span></h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">Automated match evaluation based on verified competencies</p>
+      </div>
+
+      <!-- Hero Gauge Card -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col items-center text-center relative overflow-hidden">
+        <div class="w-full flex items-center justify-between pb-space-md mb-space-sm">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-secondary"></span>
+            <span class="font-label-sm text-label-sm text-on-surface font-semibold">Tier-1 Placement Standard</span>
+          </div>
+          <span class="font-code-sm text-code-sm bg-surface-container px-2 py-0.5 rounded text-on-surface-variant">Calibrated: Q2 2025</span>
+        </div>
+        <!-- Circular Gauge -->
+        <div class="relative w-48 h-48 flex items-center justify-center my-space-xs">
+          <svg class="w-full h-full transform -rotate-90" viewbox="0 0 160 160">
+            <circle class="text-surface-container" cx="80" cy="80" fill="transparent" r="68" stroke="currentColor" stroke-width="12"></circle>
+            <circle class="text-secondary transition-all duration-1000 ease-out" cx="80" cy="80" fill="transparent" r="68" stroke="currentColor" stroke-dasharray="427.25" id="readiness-gauge-circle" stroke-dashoffset="427.25" stroke-linecap="round" stroke-width="12"></circle>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span id="readiness-score-text" class="font-display-lg-mobile text-display-lg-mobile text-on-surface font-bold">--%</span>
+            <span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mt-0.5 font-semibold">Match Score</span>
+          </div>
+        </div>
+        <div class="mt-space-sm max-w-sm">
+          <span class="font-title-md text-title-md text-on-surface block">Current Role Match</span>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Based on verified skills, project evidence, activity signals, and target-role competency requirements.</p>
+        </div>
+        <div class="mt-space-md w-full bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px] text-secondary">psychology</span>
+            <span class="font-label-md text-label-md text-on-surface">Target Role</span>
+          </div>
+          <span class="font-label-md text-label-md text-on-primary-fixed bg-surface-variant px-2.5 py-0.5 rounded-full font-semibold target-role-label">
+            ML Engineer (Junior/Associate Tier-1)
+          </span>
+        </div>
+      </div>
+
+      <!-- Core Pillars Breakdown (6 Pillars) -->
+      <div class="flex flex-col space-y-space-sm">
+        <div class="flex items-center justify-between">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">Core Pillars Breakdown</h2>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">6 Evaluated Dimensions</span>
+        </div>
+        <div class="grid grid-cols-2 gap-space-sm">
+          <!-- Pillar 1: Tech Skills -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">code</span>
+                <span id="pillar-tech-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Technical Skill Match</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-tech-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Pillar 2: Evidence -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">fact_check</span>
+                <span id="pillar-evidence-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Evidence Strength</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-evidence-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Pillar 3: Quality -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">deployed_code</span>
+                <span id="pillar-quality-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Project Quality</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-quality-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Pillar 4: Activity -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">commit</span>
+                <span id="pillar-activity-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Domain Activity</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-activity-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Pillar 5: Consistency -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">history</span>
+                <span id="pillar-consistency-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Consistency</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-consistency-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+          <!-- Pillar 6: Coverage -->
+          <div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="material-symbols-outlined text-[20px] text-secondary">assignment_turned_in</span>
+                <span id="pillar-coverage-score" class="font-title-md text-title-md text-on-surface font-bold">--%</span>
+              </div>
+              <span class="font-label-md text-label-md text-on-surface block mt-2 line-clamp-1">Role Coverage</span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-3 overflow-hidden">
+              <div id="pillar-coverage-bar" class="bg-secondary h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Competency Area Radar -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col space-y-space-md">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface">Competency Area Radar</h2>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">5-axis relative distribution index</p>
+          </div>
+          <span class="material-symbols-outlined text-secondary text-[24px]">hub</span>
+        </div>
+        <div class="flex flex-col items-center justify-center py-2">
+          <svg class="w-60 h-60" viewbox="0 0 240 240">
+            <polygon class="text-surface-container" fill="none" points="120,30 206,92 173,193 67,193 34,92" stroke="currentColor" stroke-width="1.5"></polygon>
+            <polygon class="text-surface-container" fill="none" points="120,60 177,101 155,168 85,168 63,101" stroke="currentColor" stroke-width="1.5"></polygon>
+            <polygon class="text-surface-container" fill="none" points="120,90 148,111 137,144 103,144 92,111" stroke="currentColor" stroke-width="1"></polygon>
+            <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="120" x2="120" y1="120" y2="30"></line>
+            <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="120" x2="206" y1="120" y2="92"></line>
+            <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="120" x2="173" y1="120" y2="193"></line>
+            <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="120" x2="67" y1="120" y2="193"></line>
+            <line class="text-surface-container" stroke="currentColor" stroke-dasharray="2 2" stroke-width="1" x1="120" x2="34" y1="120" y2="92"></line>
+            <polygon class="text-secondary/20" fill="currentColor" points="120,39 193,96 162,178 101,146 77,106" stroke="currentColor" stroke-width="2.5"></polygon>
+            <circle class="fill-secondary" cx="120" cy="39" r="4"></circle>
+            <circle class="fill-secondary" cx="193" cy="96" r="4"></circle>
+            <circle class="fill-secondary" cx="162" cy="178" r="4"></circle>
+            <circle class="fill-secondary" cx="101" cy="146" r="4"></circle>
+            <circle class="fill-secondary" cx="77" cy="106" r="4"></circle>
+            <text class="font-label-sm text-[10px] fill-on-surface font-semibold" text-anchor="middle" x="120" y="20">Foundations (90%)</text>
+            <text class="font-label-sm text-[10px] fill-on-surface font-semibold" text-anchor="start" x="212" y="96">ML Core (85%)</text>
+            <text class="font-label-sm text-[10px] fill-on-surface font-semibold" text-anchor="middle" x="176" y="210">Code Quality (80%)</text>
+            <text class="font-label-sm text-[10px] fill-on-surface font-semibold" text-anchor="middle" x="50" y="210">Infra (35%)</text>
+            <text class="font-label-sm text-[10px] fill-on-surface font-semibold" text-anchor="end" x="24" y="96">Sys Design (50%)</text>
+          </svg>
+        </div>
+        <div class="bg-surface-container-low p-space-sm rounded-lg flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-secondary text-[20px]">lightbulb</span>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Strong fundamental math &amp; algorithmic reasoning. Infrastructure and CI/CD deployment show the highest opportunity delta.</p>
+        </div>
+      </div>
+
+      <!-- Requirements Comparison -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col space-y-space-md">
+        <div>
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">Target Role Requirements vs Your Verified Profile</h2>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Cross-referenced with 2,400+ live job descriptions and university placement benchmarks</p>
+        </div>
+        <div class="space-y-space-sm divide-y-0" id="role-requirements-list">
+          <!-- Python -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">check_circle</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Python</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-tertiary-container bg-surface-container px-2 py-0.5 rounded-full font-semibold">100% Match</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Advanced</strong></span>
+              <span>Verified: <strong class="text-secondary">Advanced</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-secondary h-full rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+          <!-- ML -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">check_circle</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Machine Learning</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-tertiary-container bg-surface-container px-2 py-0.5 rounded-full font-semibold">100% Match</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Intermediate</strong></span>
+              <span>Verified: <strong class="text-secondary">Intermediate</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-secondary h-full rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+          <!-- SQL -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-on-tertiary-container">check_circle</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">SQL</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-tertiary-container bg-surface-container px-2 py-0.5 rounded-full font-semibold">100% Match</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Intermediate</strong></span>
+              <span>Verified: <strong class="text-secondary">Intermediate</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-secondary h-full rounded-full" style="width: 100%"></div>
+            </div>
+          </div>
+          <!-- Deep Learning -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-error">warning</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Deep Learning</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-error bg-error-container/60 px-2 py-0.5 rounded-full font-semibold">Partial Gap</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Intermediate</strong></span>
+              <span>Verified: <strong class="text-error">Beginner</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-error h-full rounded-full" style="width: 45%"></div>
+            </div>
+          </div>
+          <!-- Docker -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-outline">cancel</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Docker</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-semibold">Missing Proof</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Intermediate</strong></span>
+              <span>Verified: <strong class="text-outline">Unverified</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-outline h-full rounded-full" style="width: 15%"></div>
+            </div>
+          </div>
+          <!-- Deployment -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-outline">cancel</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Deployment</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-semibold">Missing Proof</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Intermediate</strong></span>
+              <span>Verified: <strong class="text-outline">Weak</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-outline h-full rounded-full" style="width: 25%"></div>
+            </div>
+          </div>
+          <!-- MLOps -->
+          <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col space-y-1.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px] text-outline">star_outline</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">MLOps</span>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-primary-container bg-surface-container px-2 py-0.5 rounded-full font-semibold">Optional Bonus</span>
+            </div>
+            <div class="flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+              <span>Required: <strong class="text-on-surface">Preferred</strong></span>
+              <span>Verified: <strong class="text-outline">Missing</strong></span>
+            </div>
+            <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+              <div class="bg-surface-dim h-full rounded-full" style="width: 5%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best-Fit Alternative Roles -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col space-y-space-md">
+        <div>
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">Best-Fit Alternative Roles</h2>
+          <p class="font-body-sm text-body-sm text-on-surface-variant">Career trajectories matching your currently verified artifact portfolio</p>
+        </div>
+        <div class="space-y-space-sm">
+          <!-- Data Analyst -->
+          <div class="alt-role-card p-space-md rounded-xl bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">bar_chart</span>
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-title-md text-title-md text-on-surface truncate">Data Analyst</h3>
+                <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">High Fit • Fast Placement Track</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-headline-sm text-headline-sm text-on-surface font-bold">88%</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Match</span>
+            </div>
+          </div>
+          <!-- Data Scientist -->
+          <div class="alt-role-card p-space-md rounded-xl bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">insights</span>
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-title-md text-title-md text-on-surface truncate">Data Scientist</h3>
+                <span class="font-label-sm text-label-sm text-secondary font-semibold">Solid Fit • Statistics Ready</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-headline-sm text-headline-sm text-on-surface font-bold">82%</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Match</span>
+            </div>
+          </div>
+          <!-- ML Engineer -->
+          <div class="alt-role-card p-space-md rounded-xl bg-surface-variant/40 flex items-center justify-between cursor-pointer">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-on-secondary text-[22px]">precision_manufacturing</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h3 class="font-title-md text-title-md text-on-surface truncate">ML Engineer</h3>
+                  <span class="bg-secondary text-on-secondary text-[10px] font-bold px-1.5 py-0.2 rounded">TARGET</span>
+                </div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Current Selected Goal</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">72%</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Match</span>
+            </div>
+          </div>
+          <!-- Backend Developer -->
+          <div class="alt-role-card p-space-md rounded-xl bg-surface-container-low flex items-center justify-between cursor-pointer hover:bg-surface-container transition-colors">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-on-surface-variant text-[22px]">terminal</span>
+              </div>
+              <div class="min-w-0">
+                <h3 class="font-title-md text-title-md text-on-surface truncate">Backend Developer</h3>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Moderate Fit • API Centric</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <span class="font-headline-sm text-headline-sm text-on-surface font-bold">61%</span>
+              <span class="font-label-sm text-label-sm text-on-surface-variant block">Match</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom CTA Deck -->
+      <div class="pt-space-xs space-y-space-sm pb-space-sm">
+        <div class="bg-surface-container-high/80 rounded-xl p-space-md flex items-center gap-space-sm">
+          <span class="material-symbols-outlined text-secondary text-[22px] shrink-0">trending_up</span>
+          <p class="font-body-sm text-body-sm text-on-surface flex-1">
+            Closing <strong class="text-secondary font-bold">2 high-priority gaps</strong> (Docker &amp; Deep Learning) lifts your target readiness to <strong class="text-on-surface font-bold">86%</strong>.
+          </p>
+        </div>
+        <button id="view-skill-gaps-btn" class="w-full bg-primary hover:bg-on-primary-fixed transition-colors text-on-primary h-12 rounded-lg flex items-center justify-center gap-2 font-label-md text-label-md shadow-sm cursor-pointer" type="button">
+          <span>View My Skill Gaps</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: SKILL GAP ANALYSIS -->
+    <section id="view-skill-gaps" class="view-panel hidden flex flex-col gap-space-lg w-full">
+      <!-- Header -->
+      <div class="flex flex-col gap-space-xs">
+        <div class="inline-flex items-center gap-space-xs self-start px-space-xs py-0.5 rounded-full bg-surface-container-high text-secondary">
+          <span class="material-symbols-outlined text-[14px]">psychology</span>
+          <span class="font-label-sm text-label-sm uppercase tracking-wider">Gap Diagnostic</span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">What Stands Between You and Your Target Role?</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">Identified competency and evidence deficits benchmarked for <span class="font-label-md text-label-md text-on-surface target-role-label">ML Engineer</span></p>
+      </div>
+
+      <!-- Progression Visualizer Bento -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md">
+        <div class="flex items-center justify-between gap-space-sm">
+          <div class="flex flex-col min-w-0">
+            <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Current Match</span>
+            <div class="flex items-baseline gap-1">
+              <span id="gaps-current-score" class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">--%</span>
+              <span class="font-label-md text-label-md text-secondary">→ 100% Target</span>
+            </div>
+          </div>
+          <div class="bg-surface-container-high px-space-sm py-space-xs rounded-lg flex items-center gap-1.5 shrink-0">
+            <span class="material-symbols-outlined text-secondary text-[18px]">trending_up</span>
+            <div class="flex flex-col">
+              <span class="font-label-sm text-label-sm text-on-surface uppercase leading-none"><span id="gaps-uplift-score">+--% Score Uplift</span></span>
+              <span class="font-code-sm text-[10px] text-on-surface-variant leading-tight"><span id="gaps-items-count">0 Action Items</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden flex relative">
+            <div class="bg-secondary h-full rounded-l-full transition-all duration-700 ease-out" id="gaps-baseline-bar" style="width: 0%;"></div>
+            <div class="bg-secondary-fixed-dim h-full rounded-r-full transition-all duration-700 ease-out opacity-80" id="gaps-delta-bar" style="width: 0%;"></div>
+          </div>
+          <div class="flex justify-between items-center font-code-sm text-code-sm text-on-surface-variant px-0.5">
+            <span>Verified Baseline: 72%</span>
+            <span>Target Threshold: 100%</span>
+          </div>
+        </div>
+        <div class="flex items-start gap-space-xs p-space-xs rounded-lg bg-surface-container-low text-on-surface-variant">
+          <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">info</span>
+          <p class="font-label-sm text-label-sm leading-tight text-on-surface-variant">
+            100% represents full competency coverage for the selected CareerLens role profile, not guaranteed employability.
+          </p>
+        </div>
+      </div>
+
+      <!-- Priority Filters -->
+      <div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5">
+        <button class="px-space-sm py-1 rounded-full font-label-sm text-label-sm bg-primary text-on-primary transition-all cursor-pointer" id="filter-all" onclick="applyGapFilter('all')">All (<span id="gaps-count-all">0</span>)</button>
+        <button class="px-space-sm py-1 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all flex items-center gap-1 cursor-pointer" id="filter-high" onclick="applyGapFilter('high')">
+          <span class="w-1.5 h-1.5 rounded-full bg-error"></span> High (<span id="gaps-count-high">0</span>)
+        </button>
+        <button class="px-space-sm py-1 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all flex items-center gap-1 cursor-pointer" id="filter-med" onclick="applyGapFilter('med')">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span> Medium (<span id="gaps-count-med">0</span>)
+        </button>
+        <button class="px-space-sm py-1 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all flex items-center gap-1 cursor-pointer" id="filter-low" onclick="applyGapFilter('low')">
+          <span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span> Low (<span id="gaps-count-low">0</span>)
+        </button>
+      </div>
+
+      <div id="gaps-cards-container" class="flex flex-col gap-space-md">
+<!-- GROUP 1: HIGH PRIORITY -->
+      <div class="gap-group-container flex flex-col gap-space-sm" data-priority="high">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-error"></span>
+            <span class="font-title-md text-title-md text-on-surface">High Priority Items</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded bg-error-container text-on-error-container">Critical Blockers</span>
+        </div>
+
+        <!-- Card 1: Docker -->
+        <article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md transition-all active:scale-[0.99] gap-card" data-priority="high">
+          <div class="flex items-start justify-between gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">deployed_code</span>
+              </div>
+              <div>
+                <h2 class="font-title-md text-title-md text-on-surface">Docker</h2>
+                <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                  <span>Unverified</span>
+                  <span>→</span>
+                  <span class="text-on-surface font-semibold">Intermediate</span>
+                </div>
+              </div>
+            </div>
+            <span class="bg-error-container text-on-error-container px-space-xs py-1 rounded font-label-sm text-[10px] uppercase font-semibold text-right leading-tight">
+              Core Blocker
+            </span>
+          </div>
+          <div class="flex flex-col gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+            <div class="p-space-xs rounded bg-surface-container-low text-on-surface">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase text-[10px]">Why it matters:</span>
+              Commonly required for deploying ML models and containerized backend microservices in production environments.
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-error shrink-0 mt-0.5">remove_circle_outline</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Evidence Detected:</span> None detected in connected GitHub repositories or project files.</p>
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Proof Target:</span> Containerize an existing project and commit a valid Dockerfile with build instructions.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-space-xs bg-surface-container-high/40 p-space-xs rounded-lg">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Impact</span>
+            <span class="font-label-md text-label-md text-secondary font-bold">+5.0% readiness gain</span>
+          </div>
+        </article>
+
+        <!-- Card 2: Deployment -->
+        <article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md transition-all active:scale-[0.99] gap-card" data-priority="high">
+          <div class="flex items-start justify-between gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">cloud_upload</span>
+              </div>
+              <div>
+                <h2 class="font-title-md text-title-md text-on-surface">Deployment</h2>
+                <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                  <span>Weak</span>
+                  <span>→</span>
+                  <span class="text-on-surface font-semibold">Intermediate</span>
+                </div>
+              </div>
+            </div>
+            <span class="bg-error-container text-on-error-container px-space-xs py-1 rounded font-label-sm text-[10px] uppercase font-semibold text-right leading-tight">
+              Core Blocker
+            </span>
+          </div>
+          <div class="flex flex-col gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+            <div class="p-space-xs rounded bg-surface-container-low text-on-surface">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase text-[10px]">Why it matters:</span>
+              Hiring managers look for practical proof that candidate models can be served via APIs rather than staying in Jupyter notebooks.
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-error shrink-0 mt-0.5">remove_circle_outline</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Evidence Detected:</span> Local scripts only; no endpoint or hosted URL found.</p>
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Proof Target:</span> Expose an ML inference endpoint via FastAPI or Flask hosted on Render/HuggingFace/AWS.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-space-xs bg-surface-container-high/40 p-space-xs rounded-lg">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Impact</span>
+            <span class="font-label-md text-label-md text-secondary font-bold">+6.5% readiness gain</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- GROUP 2: MEDIUM PRIORITY -->
+      <div class="gap-group-container flex flex-col gap-space-sm" data-priority="med">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-secondary-container"></span>
+            <span class="font-title-md text-title-md text-on-surface">Medium Priority</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant">Competency Gap</span>
+        </div>
+
+        <!-- Card 3: Deep Learning -->
+        <article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md transition-all active:scale-[0.99] gap-card" data-priority="med">
+          <div class="flex items-start justify-between gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">model_training</span>
+              </div>
+              <div>
+                <h2 class="font-title-md text-title-md text-on-surface">Deep Learning</h2>
+                <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                  <span>Beginner</span>
+                  <span>→</span>
+                  <span class="text-on-surface font-semibold">Intermediate</span>
+                </div>
+              </div>
+            </div>
+            <span class="bg-surface-container text-on-surface px-space-xs py-1 rounded font-label-sm text-[10px] uppercase font-semibold text-right leading-tight">
+              Medium Priority
+            </span>
+          </div>
+          <div class="flex flex-col gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+            <div class="p-space-xs rounded bg-surface-container-low text-on-surface">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase text-[10px]">Why it matters:</span>
+              Essential for advanced computer vision and NLP tasks expected in ML Engineer postings.
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">change_circle</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Evidence Detected:</span> Basic PyTorch tutorial repo detected; lacking modular architecture.</p>
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Proof Target:</span> Complete a custom training loop with metrics logging (Weights &amp; Biases or TensorBoard).</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-space-xs bg-surface-container-high/40 p-space-xs rounded-lg">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Impact</span>
+            <span class="font-label-md text-label-md text-secondary font-bold">+4.5% readiness gain</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- GROUP 3: LOW PRIORITY -->
+      <div class="gap-group-container flex flex-col gap-space-sm" data-priority="low">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-primary-container"></span>
+            <span class="font-title-md text-title-md text-on-surface">Low Priority</span>
+          </div>
+          <span class="font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded bg-surface-container-high text-on-surface-variant">Differentiator</span>
+        </div>
+
+        <!-- Card 4: MLOps -->
+        <article class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-md transition-all active:scale-[0.99] gap-card" data-priority="low">
+          <div class="flex items-start justify-between gap-space-xs">
+            <div class="flex items-center gap-space-xs">
+              <div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-secondary text-[22px]">all_inclusive</span>
+              </div>
+              <div>
+                <h2 class="font-title-md text-title-md text-on-surface">MLOps</h2>
+                <div class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant">
+                  <span>Missing</span>
+                  <span>→</span>
+                  <span class="text-on-surface font-semibold">Preferred</span>
+                </div>
+              </div>
+            </div>
+            <span class="bg-surface-container-high text-on-surface px-space-xs py-1 rounded font-label-sm text-[10px] uppercase font-semibold text-right leading-tight">
+              Differentiator
+            </span>
+          </div>
+          <div class="flex flex-col gap-space-xs text-on-surface-variant font-body-sm text-body-sm">
+            <div class="p-space-xs rounded bg-surface-container-low text-on-surface">
+              <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase text-[10px]">Why it matters:</span>
+              Preferred competency that separates standard candidates from top-tier contenders.
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-on-surface-variant shrink-0 mt-0.5">help_outline</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Evidence Detected:</span> No CI/CD pipeline, DVC data versioning, or model registry detected.</p>
+            </div>
+            <div class="flex items-start gap-space-xs">
+              <span class="material-symbols-outlined text-[16px] text-secondary shrink-0 mt-0.5">check_circle</span>
+              <p><span class="font-label-sm text-label-sm text-on-surface">Proof Target:</span> Add automated GitHub Actions workflow to run model tests on pull request.</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-space-xs bg-surface-container-high/40 p-space-xs rounded-lg">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Estimated Impact</span>
+            <span class="font-label-md text-label-md text-secondary font-bold">+3.0% readiness gain</span>
+          </div>
+        </article>
+      </div>
+
+      
+      </div>
+
+      <!-- Bottom CTA Block -->
+      <div class="flex flex-col gap-space-xs pt-space-sm pb-space-xs">
+        <button id="build-roadmap-btn" class="w-full bg-primary text-on-primary py-space-sm rounded-lg font-label-md text-label-md flex items-center justify-center gap-space-xs shadow-md active:bg-on-primary-fixed transition-colors cursor-pointer" type="button">
+          <span>Build My Roadmap</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </button>
+        <div class="flex items-center justify-center gap-1 text-center">
+          <span class="material-symbols-outlined text-[14px] text-secondary">bolt</span>
+          <p class="font-label-sm text-label-sm text-on-surface-variant">Ranked by return on effort to maximize your placement trajectory</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: PERSONALIZED CAREER ROADMAP -->
+    <section id="view-career-roadmap" class="view-panel hidden space-y-space-md w-full">
+      <!-- Header -->
+      <div class="flex flex-col space-y-space-xs">
+        <div class="flex items-center gap-space-xs">
+          <span class="bg-surface-container-high text-secondary px-space-xs py-0.5 rounded-full font-label-sm text-label-sm uppercase tracking-wide flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">auto_graph</span>
+            Algorithmic Projection
+          </span>
+          <span class="text-on-surface-variant font-label-sm text-label-sm">Updated Today</span>
+        </div>
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+          Your Path From <span id="roadmap-from-score">--%</span> Toward Full Role Readiness
+        </h1>
+        <p class="font-body-md text-body-md text-on-surface-variant">
+          Every recommendation is connected to an identified skill or evidence gap.
+        </p>
+      </div>
+
+      <!-- Readiness Projection Banner Card -->
+      <div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-space-xs">
+            <div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+            </div>
+            <div>
+              <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Target Role Benchmark</span>
+              <p class="font-title-md text-title-md text-on-surface target-role-label">ML Engineer (Tier-1 Placement)</p>
+            </div>
+          </div>
+          <span class="bg-surface-container text-on-surface font-code-sm text-code-sm px-space-xs py-1 rounded">
+            <span id="roadmap-delta-text">+--% Max Delta</span>
+          </span>
+        </div>
+        <!-- Comparative Metric Display -->
+        <div class="grid grid-cols-2 gap-space-sm bg-surface-container-low p-space-md rounded-xl">
+          <!-- Current Metric -->
+          <div class="flex flex-col justify-between">
+            <span class="font-label-sm text-label-sm text-on-surface-variant">Current Readiness</span>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span class="font-headline-md text-headline-md text-on-surface font-bold">72</span>
+              <span class="font-title-md text-title-md text-on-surface-variant">%</span>
+            </div>
+            <div class="w-full bg-surface-variant h-1.5 rounded-full mt-2 overflow-hidden">
+              <div class="bg-outline h-full rounded-full" id="gaps-baseline-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+          <!-- Projected Metric -->
+          <div class="flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-secondary font-semibold">Projected Score</span>
+              <span class="material-symbols-outlined text-secondary text-[16px]">stars</span>
+            </div>
+            <div class="flex items-baseline gap-1 mt-1">
+              <span id="roadmap-projected-score" class="font-headline-md text-headline-md text-secondary font-bold">--</span>
+              <span class="font-title-md text-title-md text-secondary">%</span>
+            </div>
+            <div class="w-full bg-surface-variant h-1.5 rounded-full mt-2 overflow-hidden">
+              <div id="roadmap-projected-bar" class="bg-secondary h-full rounded-full transition-all duration-1000" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-start gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+          <span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">info</span>
+          <p class="font-label-sm text-label-sm text-on-surface-variant leading-snug">
+            Projected score is an estimation based on simulated evidence completion, not guaranteed placement.
+          </p>
+        </div>
+      </div>
+
+      <!-- Milestone Status Chips -->
+      <div class="grid grid-cols-3 gap-space-xs">
+        <div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-center items-center text-center">
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Total Milestones</span>
+          <span class="font-title-md text-title-md text-on-surface font-bold mt-0.5">5 Steps</span>
+        </div>
+        <div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-center items-center text-center">
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Execution Status</span>
+          <span class="font-title-md text-title-md text-secondary font-bold mt-0.5">1 Active · 4 Idle</span>
+        </div>
+        <div class="bg-surface-container-lowest p-space-sm rounded-xl shadow-sm flex flex-col justify-center items-center text-center">
+          <span class="font-label-sm text-label-sm text-on-surface-variant">Est. Cadence</span>
+          <span class="font-title-md text-title-md text-on-surface font-bold mt-0.5">4–6 Weeks</span>
+        </div>
+      </div>
+
+      <!-- Visual Milestone Timeline -->
+      <div id="roadmap-timeline-steps" class="relative flex flex-col space-y-space-md pt-space-xs">
+        <!-- Visual Spine Bar -->
+        <div class="absolute left-4 top-6 bottom-8 w-0.5 bg-surface-container-high -z-0"></div>
+
+        <!-- Step 1 Card -->
+        <div class="relative flex items-start gap-space-md group">
+          <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-on-secondary shrink-0 shadow-sm ring-4 ring-surface">
+            <span class="font-label-md text-label-md">1</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+            <div class="flex items-start justify-between gap-space-xs">
+              <div class="flex flex-col">
+                <span class="font-label-sm text-label-sm text-secondary uppercase font-semibold">Step 1 — Learn</span>
+                <h2 class="font-title-md text-title-md text-on-surface font-bold">Master Docker Fundamentals</h2>
+              </div>
+              <span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-space-xs py-0.5 rounded-full shrink-0 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest animate-pulse"></span>
+                In Progress
+              </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="bg-surface-container-low text-on-surface font-code-sm text-code-sm px-space-xs py-0.5 rounded flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-secondary">tune</span>
+                Skill: Docker
+              </span>
+              <span class="bg-surface-container-low text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold">
+                +5.0% Impact
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-xs text-on-surface">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Why Recommended:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Docker is required for the target ML Engineer role but currently unverified on your profile.
+                </p>
+              </div>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Action Project:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Complete practical containerization modules covering multi-stage builds, volumes, and networking.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-space-xs bg-surface-container-high/60 p-space-sm rounded-lg">
+              <span class="material-symbols-outlined text-secondary text-[16px] shrink-0 mt-0.5">verified_user</span>
+              <div>
+                <span class="font-label-sm text-label-sm text-secondary font-semibold block uppercase">Expected Verification Evidence:</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Dockerfile committed to GitHub repository and verified by automated linter.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-space-sm pt-space-xs">
+              <img class="w-10 h-10 rounded-lg object-cover shrink-0" data-alt="Technical workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxJuAdd_fJ3qI9odI_8usk8ZSwGecFMFMDOG2pl7gn4noMpGuWqe2WyLrbCc5-manDtXvrukjjp4IAHo0GUR88T0_ropk79H7f_nhPqUTPyOCypEo5ioWN4M9TkwUxBLuylrtwoNgfRyKGnrFU8_Q6nK3x-1cmsbGd422uMBmlBTVVofjNkhegNZBLAaVb_IuhnDVyoRC5XMr-GbxsXTxCWm2Mk7zGdKN279vAfw"/>
+              <div class="flex-1 min-w-0">
+                <span class="font-label-sm text-label-sm text-on-surface truncate block">Repo: /ml-image-detector/docker</span>
+                <span class="font-code-sm text-code-sm text-on-surface-variant">Branch: staging-v1</span>
+              </div>
+              <button id="sync-git-btn" class="bg-surface-container text-on-surface font-label-sm text-label-sm px-space-sm py-1 rounded-lg shrink-0 cursor-pointer transition-colors" type="button">
+                Sync Git
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 Card -->
+        <div class="relative flex items-start gap-space-md group">
+          <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant shrink-0 ring-4 ring-surface">
+            <span class="font-label-md text-label-md">2</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm opacity-95">
+            <div class="flex items-start justify-between gap-space-xs">
+              <div class="flex flex-col">
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Step 2 — Apply</span>
+                <h2 class="font-title-md text-title-md text-on-surface font-bold">Containerize Existing ML Project</h2>
+              </div>
+              <span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded-full shrink-0">
+                Not Started
+              </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="bg-surface-container-low text-on-surface font-code-sm text-code-sm px-space-xs py-0.5 rounded flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-outline">hub</span>
+                Skill: ML + Containerization
+              </span>
+              <span class="bg-surface-container-low text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold">
+                +5.5% Impact
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-xs">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Why Recommended:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Converts theoretical knowledge into visible, verifiable proof of work for recruiters.
+                </p>
+              </div>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Action Project:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Wrap your PyTorch image classifier into a Docker container with reproducible dependencies.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+              <span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">terminal</span>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold block uppercase">Expected Verification Evidence:</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Public GitHub repo with Dockerfile, requirements.txt, and Docker Hub image link.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 Card -->
+        <div class="relative flex items-start gap-space-md group">
+          <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant shrink-0 ring-4 ring-surface">
+            <span class="font-label-md text-label-md">3</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm opacity-95">
+            <div class="flex items-start justify-between gap-space-xs">
+              <div class="flex flex-col">
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Step 3 — Build</span>
+                <h2 class="font-title-md text-title-md text-on-surface font-bold">Deploy the ML Model as an API</h2>
+              </div>
+              <span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded-full shrink-0">
+                Not Started
+              </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="bg-surface-container-low text-on-surface font-code-sm text-code-sm px-space-xs py-0.5 rounded flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-outline">cloud_upload</span>
+                Skill: Deployment &amp; API Design
+              </span>
+              <span class="bg-surface-container-low text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold">
+                +6.5% Impact
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-xs">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Why Recommended:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Deployment evidence is currently weak with no live hosted demonstration.
+                </p>
+              </div>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Action Project:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Build a FastAPI REST endpoint that takes inference requests and returns predictions with latency &lt;200ms.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+              <span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">language</span>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold block uppercase">Expected Verification Evidence:</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Live Swagger/Postman URL or deployed web app link on portfolio.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 Card -->
+        <div class="relative flex items-start gap-space-md group">
+          <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant shrink-0 ring-4 ring-surface">
+            <span class="font-label-md text-label-md">4</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm opacity-95">
+            <div class="flex items-start justify-between gap-space-xs">
+              <div class="flex flex-col">
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Step 4 — Strengthen</span>
+                <h2 class="font-title-md text-title-md text-on-surface font-bold">Add CI/CD or Basic MLOps Workflow</h2>
+              </div>
+              <span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded-full shrink-0">
+                Not Started
+              </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="bg-surface-container-low text-on-surface font-code-sm text-code-sm px-space-xs py-0.5 rounded flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-outline">alt_route</span>
+                Skill: MLOps &amp; Code Quality
+              </span>
+              <span class="bg-surface-container-low text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold">
+                +3.5% Impact
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-xs">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Why Recommended:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  MLOps is missing from the verified profile; adds competitive edge for Tier-1 drives.
+                </p>
+              </div>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Action Project:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Implement GitHub Actions for automated linting (flake8), unit tests (pytest), and Docker image building.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+              <span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">check_circle</span>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold block uppercase">Expected Verification Evidence:</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Green CI/CD badge on GitHub repository README.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 Card -->
+        <div class="relative flex items-start gap-space-md group">
+          <div class="z-10 flex items-center justify-center w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant shrink-0 ring-4 ring-surface">
+            <span class="font-label-md text-label-md">5</span>
+          </div>
+          <div class="flex-1 bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm opacity-95">
+            <div class="flex items-start justify-between gap-space-xs">
+              <div class="flex flex-col">
+                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase font-semibold">Step 5 — Re-evaluate</span>
+                <h2 class="font-title-md text-title-md text-on-surface font-bold">Synchronize &amp; Recalibrate Profile</h2>
+              </div>
+              <span class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm px-space-xs py-0.5 rounded-full shrink-0">
+                Not Started
+              </span>
+            </div>
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="bg-surface-container-low text-on-surface font-code-sm text-code-sm px-space-xs py-0.5 rounded flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-outline">sync</span>
+                Skill: Continuous Verification
+              </span>
+              <span class="bg-surface-container-low text-secondary font-code-sm text-code-sm px-space-xs py-0.5 rounded font-bold">
+                Final Verification Audit
+              </span>
+            </div>
+            <div class="bg-surface-container-low p-space-sm rounded-lg space-y-space-xs">
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Why Recommended:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Updates your algorithmic score as soon as real artifacts are published.
+                </p>
+              </div>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Action Project:</span>
+                <p class="font-body-sm text-body-sm text-on-surface">
+                  Update GitHub and project links, then trigger CareerLens automated re-audit.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+              <span class="material-symbols-outlined text-outline text-[16px] shrink-0 mt-0.5">workspace_premium</span>
+              <div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant font-semibold block uppercase">Expected Verification Evidence:</span>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Refreshed CareerLens placement certificate with updated readiness score (90%+).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Commitment Widget -->
+      <div class="bg-surface-container-low rounded-xl p-space-md space-y-space-sm">
+        <div class="flex items-center justify-between">
+          <span class="font-label-md text-label-md text-on-surface font-semibold">Weekly Execution Commitment</span>
+          <span class="font-code-sm text-code-sm text-secondary font-bold" id="hours-display">8 hrs / week</span>
+        </div>
+        <input class="w-full accent-secondary bg-surface-container-high rounded-lg cursor-pointer" id="commitment-slider" max="20" min="4" step="2" type="range" value="8"/>
+        <div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+          <span>Balanced (4h)</span>
+          <span>Target Pace (8h)</span>
+          <span>Sprint (20h)</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col space-y-space-sm pt-space-xs">
+        <button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 px-space-md rounded-lg flex items-center justify-center gap-space-xs shadow-sm hover:opacity-90 active:scale-[0.99] transition-all cursor-pointer" id="track-btn" type="button">
+          <span class="material-symbols-outlined text-[18px]">play_circle</span>
+          <span>Track Progress &amp; Set Milestones</span>
+        </button>
+        <button class="w-full bg-surface-container-lowest text-on-surface font-label-md text-label-md py-2.5 px-space-md rounded-lg flex items-center justify-center gap-space-xs shadow-sm hover:bg-surface-container-low active:scale-[0.99] transition-all cursor-pointer" id="export-btn" type="button">
+          <span class="material-symbols-outlined text-[18px]">ios_share</span>
+          <span>Export Roadmap to PDF / Notion</span>
+        </button>
+        <div class="p-space-sm text-center">
+          <p class="font-label-sm text-label-sm text-on-surface-variant leading-relaxed">
+            CareerLens verifies digital artifacts on demand. Scores adjust dynamically as new commits and repos are synced.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== FIXED BOTTOM NAVIGATION BAR ==================== -->
+  <nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_8px_rgba(0,0,0,0.04)]" data-active-classes="text-secondary font-semibold">
+    <div class="app-shell">
+      <div class="flex items-center justify-between overflow-x-auto no-scrollbar h-16 px-space-xs">
+        <!-- 1. Setup -->
+        <a aria-current="page" class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs transition-colors text-secondary font-semibold cursor-pointer" data-path="profile-setup" href="#profile-setup">
+          <span class="material-symbols-outlined text-[20px]">account_circle</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Setup</span>
+        </a>
+        <!-- 2. Analysis -->
+        <a class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs text-on-surface-variant transition-colors cursor-pointer" data-path="profile-analysis" href="#profile-analysis">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Analysis</span>
+        </a>
+        <!-- 3. Evidence -->
+        <a class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs text-on-surface-variant transition-colors cursor-pointer" data-path="evidence-verification" href="#evidence-verification">
+          <span class="material-symbols-outlined text-[20px]">verified</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Evidence</span>
+        </a>
+        <!-- 4. Readiness -->
+        <a class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs text-on-surface-variant transition-colors cursor-pointer" data-path="role-readiness" href="#role-readiness">
+          <span class="material-symbols-outlined text-[20px]">speed</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Readiness</span>
+        </a>
+        <!-- 5. Gaps -->
+        <a class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs text-on-surface-variant transition-colors cursor-pointer" data-path="skill-gaps" href="#skill-gaps">
+          <span class="material-symbols-outlined text-[20px]">published_with_changes</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Gaps</span>
+        </a>
+        <!-- 6. Roadmap -->
+        <a class="flex flex-col items-center justify-center flex-1 min-w-[64px] h-14 px-space-xs text-on-surface-variant transition-colors cursor-pointer" data-path="career-roadmap" href="#career-roadmap">
+          <span class="material-symbols-outlined text-[20px]">conversion_path</span>
+          <span class="font-label-sm text-label-sm whitespace-nowrap mt-0.5">Roadmap</span>
+        </a>
+      </div>
+      <div class="px-space-md py-1 bg-surface-container-low/60 text-center">
+        <p class="font-label-sm text-label-sm text-on-surface-variant">Verified University Career &amp; Placement Analytics Platform</p>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dummy Data and Application Logic -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

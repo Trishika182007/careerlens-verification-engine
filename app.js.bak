@@ -1,0 +1,548 @@
+// CareerLens Application Controller & Router
+// Provides smooth client-side routing, state management, and interactions
+
+(function () {
+  'use strict';
+
+  // Available routes and their metadata
+  const ROUTES = {
+    'profile-setup': {
+      title: 'Profile Setup',
+      viewId: 'view-profile-setup'
+    },
+    'profile-analysis': {
+      title: 'Profile Analysis',
+      viewId: 'view-profile-analysis'
+    },
+    'evidence-verification': {
+      title: 'Evidence Verification',
+      viewId: 'view-evidence-verification'
+    },
+    'role-readiness': {
+      title: 'Role Readiness',
+      viewId: 'view-role-readiness'
+    },
+    'skill-gaps': {
+      title: 'Skill Gaps',
+      viewId: 'view-skill-gaps'
+    },
+    'career-roadmap': {
+      title: 'Career Roadmap',
+      viewId: 'view-career-roadmap'
+    }
+  };
+
+  const DEFAULT_ROUTE = 'profile-setup';
+
+  // Toast Notification Helper
+  function showToast(message, icon = 'check_circle', duration = 2500) {
+    let toast = document.getElementById('app-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'app-toast';
+      toast.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2 px-4 py-2.5 rounded-full bg-primary text-on-primary shadow-lg font-label-md text-label-md';
+      document.body.appendChild(toast);
+    }
+    toast.innerHTML = `<span class="material-symbols-outlined text-[18px] text-tertiary-fixed">${icon}</span><span>${message}</span>`;
+    toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-2');
+    toast.classList.add('opacity-100', 'translate-y-0');
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-2');
+      toast.classList.remove('opacity-100', 'translate-y-0');
+    }, duration);
+  }
+
+  // Client-Side Router
+  function navigateTo(routeKey) {
+    if (!ROUTES[routeKey]) routeKey = DEFAULT_ROUTE;
+    window.location.hash = '#' + routeKey;
+  }
+
+  function handleRouteChange() {
+    let hash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (!hash || !ROUTES[hash]) {
+      hash = DEFAULT_ROUTE;
+    }
+
+    const currentRoute = ROUTES[hash];
+
+    // Toggle view panels
+    Object.keys(ROUTES).forEach(key => {
+      const panel = document.getElementById(ROUTES[key].viewId);
+      if (panel) {
+        if (key === hash) {
+          panel.classList.remove('hidden');
+        } else {
+          panel.classList.add('hidden');
+        }
+      }
+    });
+
+    // Update Header Title Subtitle
+    const headerTitle = document.getElementById('header-screen-title');
+    if (headerTitle) {
+      headerTitle.textContent = currentRoute.title;
+    }
+
+    // Update Bottom Navigation Tab Highlight
+    const navLinks = document.querySelectorAll('nav a[data-path]');
+    navLinks.forEach(link => {
+      const path = link.getAttribute('data-path');
+      if (path === hash) {
+        link.setAttribute('aria-current', 'page');
+        link.classList.remove('text-on-surface-variant');
+        link.classList.add('text-secondary', 'font-semibold');
+      } else {
+        link.removeAttribute('aria-current');
+        link.classList.remove('text-secondary', 'font-semibold');
+        link.classList.add('text-on-surface-variant');
+      }
+    });
+
+    // Scroll to top of view
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // Dynamic Skill Selection in Evidence Verification
+  function selectSkill(skillKey) {
+    if (!window.careerLensData || !window.careerLensData.evidenceSkills) return;
+    const data = window.careerLensData.evidenceSkills[skillKey];
+    if (!data) return;
+
+    // Highlight selected row
+    document.querySelectorAll('.skill-row').forEach(row => {
+      row.classList.remove('border-2', 'border-secondary/20', 'bg-surface-container-low');
+    });
+    const selectedRow = document.getElementById('row-' + skillKey);
+    if (selectedRow) {
+      selectedRow.classList.add('border-2', 'border-secondary/20', 'bg-surface-container-low');
+    }
+
+    // Update Auditor Inspector contents
+    const inspectorTitle = document.getElementById('inspector-title');
+    const badge = document.getElementById('inspector-strength-badge');
+    const sources = document.getElementById('inspector-sources');
+    const activity = document.getElementById('inspector-activity');
+    const rationale = document.getElementById('inspector-rationale');
+    const level = document.getElementById('inspector-level');
+
+    if (inspectorTitle) inspectorTitle.innerText = data.title;
+    if (badge) {
+      badge.className = `px-space-sm py-1 rounded-full ${data.badgeClass} font-label-sm text-label-sm flex items-center gap-1`;
+      badge.innerHTML = `<span class="material-symbols-outlined text-[14px]">verified</span> <span>${data.badgeText}</span>`;
+    }
+    if (sources) sources.innerText = data.sources;
+    if (activity) activity.innerText = data.activity;
+    if (rationale) rationale.innerText = data.rationale;
+    if (level) level.innerHTML = data.level;
+  }
+
+  // Filter in Evidence Verification
+  function setEvidenceFilter(filterType) {
+    const buttons = document.querySelectorAll('#evidence-filter-container .filter-btn');
+    buttons.forEach(btn => {
+      if (btn.getAttribute('data-filter') === filterType) {
+        btn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+        btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+      } else {
+        btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+        btn.classList.add('bg-surface-container', 'text-on-surface-variant');
+      }
+    });
+
+    const rows = document.querySelectorAll('.skill-row');
+    rows.forEach(row => {
+      const status = row.getAttribute('data-skill-status');
+      if (filterType === 'all' || status === filterType) {
+        row.style.display = 'flex';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  // Filter in Skill Gaps
+  function applyGapFilter(selected) {
+    const filterBtns = {
+      all: document.getElementById('filter-all'),
+      high: document.getElementById('filter-high'),
+      med: document.getElementById('filter-med'),
+      low: document.getElementById('filter-low')
+    };
+
+    Object.keys(filterBtns).forEach(key => {
+      const btn = filterBtns[key];
+      if (!btn) return;
+      if (key === selected) {
+        btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+        btn.classList.add('bg-primary', 'text-on-primary');
+      } else {
+        btn.classList.remove('bg-primary', 'text-on-primary');
+        btn.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+      }
+    });
+
+    const groupContainers = document.querySelectorAll('.gap-group-container');
+    groupContainers.forEach(container => {
+      if (selected === 'all' || container.dataset.priority === selected) {
+        container.style.display = 'flex';
+      } else {
+        container.style.display = 'none';
+      }
+    });
+  }
+
+  // Wire all page interactions on DOMContentLoaded
+  function initApp() {
+    // 1. Setup Hash Router Listener
+    window.addEventListener('hashchange', handleRouteChange);
+
+    // 2. Setup Nav Links
+    document.querySelectorAll('nav a[data-path]').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const path = this.getAttribute('data-path');
+        navigateTo(path);
+      });
+    });
+
+    // 3. Screen 1: Profile Setup - Target Role Select
+    const roleSelect = document.getElementById('role-select');
+    if (roleSelect) {
+      roleSelect.addEventListener('change', function () {
+        const selectedText = this.options[this.selectedIndex].text;
+        showToast(`Target role set to ${selectedText}`, 'target');
+
+        // Update target role titles across all screens
+        document.querySelectorAll('.target-role-label').forEach(el => {
+          el.textContent = selectedText;
+        });
+      });
+    }
+
+    // Screen 1: Resume File Upload & Parsing Handler
+    const resumeFileInput = document.getElementById('resume-file-input');
+    const resumeUploadZone = document.getElementById('resume-upload-zone');
+    const uploadResumeBtn = document.getElementById('upload-resume-btn');
+    const resumeFilename = document.getElementById('resume-filename');
+    const resumeMeta = document.getElementById('resume-meta');
+    const resumeStatusText = document.getElementById('resume-status-text');
+
+    function handleResumeFile(file) {
+      if (!file) return;
+
+      let sizeStr = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+      if (file.size < 1024 * 1024) {
+        sizeStr = Math.max(1, Math.round(file.size / 1024)) + ' KB';
+      }
+
+      if (resumeFilename) {
+        resumeFilename.textContent = file.name;
+      }
+      if (resumeMeta) {
+        resumeMeta.textContent = `${sizeStr} • Uploading & parsing...`;
+      }
+      if (resumeStatusText) {
+        resumeStatusText.innerHTML = `<span class="text-secondary font-medium inline-flex items-center gap-1"><span class="material-symbols-outlined text-[13px] animate-spin">refresh</span> Extracting ATS competencies...</span>`;
+      }
+
+      showToast(`Processing ${file.name}...`, 'hourglass_empty', 1400);
+
+      setTimeout(() => {
+        if (resumeMeta) {
+          resumeMeta.textContent = `${sizeStr} • Parsed just now`;
+        }
+        if (resumeStatusText) {
+          resumeStatusText.textContent = 'Text layer & ATS structure verified';
+        }
+
+        // Update in global data store
+        if (window.careerLensData && window.careerLensData.candidate) {
+          window.careerLensData.candidate.resumeFile = file.name;
+          window.careerLensData.candidate.resumeSize = sizeStr;
+          window.careerLensData.candidate.resumeParsedAgo = 'Just now';
+        }
+
+        // Update in Screen 2 CV Card
+        const screen2CvMeta = document.getElementById('screen2-resume-meta');
+        if (screen2CvMeta) {
+          screen2CvMeta.textContent = `Parsed just now • ${file.name} (${sizeStr})`;
+        }
+
+        showToast(`Resume "${file.name}" uploaded and parsed!`, 'task_alt', 3000);
+      }, 1200);
+    }
+
+    if (resumeUploadZone && resumeFileInput) {
+      resumeUploadZone.addEventListener('click', (e) => {
+        resumeFileInput.click();
+      });
+
+      if (uploadResumeBtn) {
+        uploadResumeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          resumeFileInput.click();
+        });
+      }
+
+      resumeFileInput.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+          handleResumeFile(this.files[0]);
+        }
+      });
+
+      // Drag and drop events
+      ['dragenter', 'dragover'].forEach(name => {
+        resumeUploadZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          resumeUploadZone.classList.add('border-secondary', 'bg-surface-container');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(name => {
+        resumeUploadZone.addEventListener(name, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          resumeUploadZone.classList.remove('border-secondary', 'bg-surface-container');
+        });
+      });
+
+      resumeUploadZone.addEventListener('drop', (e) => {
+        const files = e.dataTransfer?.files;
+        if (files && files.length > 0) {
+          handleResumeFile(files[0]);
+        }
+      });
+    }
+
+    // Screen 1: "Analyze My Career Profile" Button
+    const analyzeBtn = document.getElementById('analyze-btn');
+    if (analyzeBtn) {
+      analyzeBtn.addEventListener('click', async function () {
+        const btn = this;
+        const resumeInput = document.getElementById('resume-file-input');
+        const resumeFile = resumeInput && resumeInput.files
+          ? resumeInput.files[0]
+          : null;
+
+        if (!resumeFile) {
+          showToast('Please upload a resume PDF first.', 'error', 3000);
+          return;
+        }
+
+        if (!window.CareerLensAPI) {
+          showToast('Backend bridge is not loaded. Add data.js before app.js.', 'error', 3500);
+          return;
+        }
+
+        const roleSelect = document.getElementById('role-select');
+        const roleValue = roleSelect && roleSelect.value
+          ? roleSelect.value
+          : 'ml';
+        const ROLE_MAP = {
+          ml: 'ml_engineer',
+          backend: 'backend_developer',
+          frontend: 'frontend_developer',
+          'data-analyst': 'data_analyst',
+          'data-scientist': 'data_scientist',
+          ux: 'ui_ux_designer'
+        };
+        const targetRole = ROLE_MAP[roleValue] || roleValue;
+
+        const links = (window.careerLensData && window.careerLensData.profileLinks) || {};
+        const formData = new FormData();
+        formData.append('resume', resumeFile);
+        formData.append('target_role', targetRole);
+        formData.append('github_url', links.github_url || '');
+        formData.append('leetcode_url', links.leetcode_url || '');
+        formData.append('linkedin_url', links.linkedin_url || '');
+        formData.append('figma_url', links.figma_url || '');
+
+        const originalContent = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+          <span>Cross-verifying repos & resume...</span>
+        `;
+
+        try {
+          const response = await window.CareerLensAPI.analyzeProfile(formData);
+          const score = response.analysis?.readiness_score ?? 0;
+          showToast(`Diagnostic completed with ${score}% Role Readiness`, 'verified');
+          navigateTo('profile-analysis');
+
+          // Refresh the inspector using the first returned skill when available.
+          const firstSkill = Object.keys(window.careerLensData.evidenceSkills || {})[0];
+          if (firstSkill && typeof selectSkill === 'function') {
+            selectSkill(firstSkill);
+          }
+        } catch (error) {
+          console.error('CareerLens backend error:', error);
+          showToast(`Analysis failed: ${error.message}`, 'error', 5000);
+        } finally {
+          btn.innerHTML = originalContent;
+          btn.disabled = false;
+        }
+      });
+    }
+
+    // Keep the UI synchronized when a backend result arrives.
+    window.addEventListener('careerlens:analysis-ready', function (event) {
+      const analysis = event.detail?.analysis;
+      if (!analysis) return;
+
+      document.querySelectorAll('.target-role-label').forEach(el => {
+        el.textContent = analysis.role_name || analysis.target_role;
+      });
+
+      const firstSkill = Object.keys(window.careerLensData.evidenceSkills || {})[0];
+      if (firstSkill) {
+        selectSkill(firstSkill);
+      }
+    });
+
+    // 4. Screen 2: Profile Analysis - In-page CTAs
+    const viewEvidenceCta = document.getElementById('view-evidence-cta');
+    if (viewEvidenceCta) {
+      viewEvidenceCta.addEventListener('click', function () {
+        navigateTo('evidence-verification');
+      });
+    }
+
+    const forceSyncBtn = document.getElementById('force-sync-btn');
+    if (forceSyncBtn) {
+      forceSyncBtn.addEventListener('click', function () {
+        showToast('Re-synced 5 active platforms and 24 repos', 'sync');
+      });
+    }
+
+    const exportJsonBtn = document.getElementById('export-json-btn');
+    if (exportJsonBtn) {
+      exportJsonBtn.addEventListener('click', function () {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(window.careerLensData, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "careerlens_profile_telemetry.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast('Exported telemetry JSON', 'file_download');
+      });
+    }
+
+    // 5. Screen 3: Evidence Verification
+    const compareTargetRoleBtn = document.getElementById('compare-target-role-btn');
+    if (compareTargetRoleBtn) {
+      compareTargetRoleBtn.addEventListener('click', function () {
+        navigateTo('role-readiness');
+      });
+    }
+
+    const viewCommitsBtn = document.getElementById('view-commits-btn');
+    if (viewCommitsBtn) {
+      viewCommitsBtn.addEventListener('click', function () {
+        showToast('Verified SHA-256 commit hash in repository', 'fact_check');
+      });
+    }
+
+    // 6. Screen 4: Role Readiness
+    const viewSkillGapsBtn = document.getElementById('view-skill-gaps-btn');
+    if (viewSkillGapsBtn) {
+      viewSkillGapsBtn.addEventListener('click', function () {
+        navigateTo('skill-gaps');
+      });
+    }
+
+    // Alternative role selector click
+    document.querySelectorAll('.alt-role-card').forEach(card => {
+      card.addEventListener('click', function () {
+        const roleName = this.querySelector('h3')?.textContent || 'Selected Role';
+        showToast(`Benchmarked against ${roleName}`, 'insights');
+      });
+    });
+
+    // 7. Screen 5: Skill Gaps
+    const buildRoadmapBtn = document.getElementById('build-roadmap-btn');
+    if (buildRoadmapBtn) {
+      buildRoadmapBtn.addEventListener('click', function () {
+        navigateTo('career-roadmap');
+      });
+    }
+
+    // 8. Screen 6: Career Roadmap
+    const syncGitBtn = document.getElementById('sync-git-btn');
+    if (syncGitBtn) {
+      syncGitBtn.addEventListener('click', function () {
+        const btn = this;
+        btn.textContent = 'Auditing...';
+        btn.classList.add('opacity-75');
+        setTimeout(() => {
+          btn.textContent = 'Linked';
+          btn.classList.remove('opacity-75');
+          btn.classList.add('bg-tertiary-container', 'text-tertiary-fixed');
+          showToast('Repo /ml-image-detector/docker linked & verified', 'verified');
+        }, 1200);
+      });
+    }
+
+    const commitmentSlider = document.getElementById('commitment-slider');
+    const hoursDisplay = document.getElementById('hours-display');
+    if (commitmentSlider && hoursDisplay) {
+      commitmentSlider.addEventListener('input', function () {
+        hoursDisplay.textContent = this.value + ' hrs / week';
+      });
+    }
+
+    const trackBtn = document.getElementById('track-btn');
+    if (trackBtn) {
+      trackBtn.addEventListener('click', function () {
+        const label = this.querySelector('span:not(.material-symbols-outlined)');
+        if (label) {
+          label.textContent = 'Milestones Activated in Tracker!';
+          this.classList.replace('bg-primary', 'bg-secondary');
+          showToast('5 milestones added to personal study schedule', 'checklist');
+          setTimeout(() => {
+            label.textContent = 'Track Progress & Set Milestones';
+            this.classList.replace('bg-secondary', 'bg-primary');
+          }, 2400);
+        }
+      });
+    }
+
+    const exportBtn = document.getElementById('export-btn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', function () {
+        const label = this.querySelector('span:not(.material-symbols-outlined)');
+        if (label) {
+          const original = label.textContent;
+          label.textContent = 'Generating PDF Export...';
+          setTimeout(() => {
+            label.textContent = 'Saved to Downloads';
+            showToast('Career Roadmap exported to PDF', 'ios_share');
+            setTimeout(() => {
+              label.textContent = original;
+            }, 1800);
+          }, 1000);
+        }
+      });
+    }
+
+    // Initial Route render
+    handleRouteChange();
+  }
+
+  // Export functions to global scope for HTML onclick attributes
+  window.navigateTo = navigateTo;
+  window.selectSkill = selectSkill;
+  window.setEvidenceFilter = setEvidenceFilter;
+  window.applyGapFilter = applyGapFilter;
+
+  // Initialize on DOM Ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
+})();

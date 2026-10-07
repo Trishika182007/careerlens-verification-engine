@@ -1,0 +1,185 @@
+{
+  "ml_engineer": {
+    "name": "ML Engineer",
+    "requirements": {
+      "Python": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "Machine Learning": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "Deep Learning": {
+        "required_level": 60,
+        "weight": 4
+      },
+      "Data Structures and Algorithms": {
+        "required_level": 60,
+        "weight": 3
+      },
+      "SQL": {
+        "required_level": 55,
+        "weight": 3
+      },
+      "Git": {
+        "required_level": 50,
+        "weight": 2
+      },
+      "Docker": {
+        "required_level": 50,
+        "weight": 3
+      },
+      "FastAPI": {
+        "required_level": 45,
+        "weight": 2
+      }
+    }
+  },
+  "data_analyst": {
+    "name": "Data Analyst",
+    "requirements": {
+      "Python": {
+        "required_level": 60,
+        "weight": 4
+      },
+      "SQL": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "Machine Learning": {
+        "required_level": 45,
+        "weight": 2
+      },
+      "Git": {
+        "required_level": 40,
+        "weight": 1
+      }
+    }
+  },
+  "data_scientist": {
+    "name": "Data Scientist",
+    "requirements": {
+      "Python": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "SQL": {
+        "required_level": 60,
+        "weight": 3
+      },
+      "Machine Learning": {
+        "required_level": 75,
+        "weight": 5
+      },
+      "Deep Learning": {
+        "required_level": 55,
+        "weight": 3
+      },
+      "Data Structures and Algorithms": {
+        "required_level": 50,
+        "weight": 2
+      }
+    }
+  },
+  "backend_developer": {
+    "name": "Backend Developer",
+    "requirements": {
+      "Python": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "SQL": {
+        "required_level": 65,
+        "weight": 4
+      },
+      "Git": {
+        "required_level": 50,
+        "weight": 2
+      },
+      "FastAPI": {
+        "required_level": 55,
+        "weight": 4
+      },
+      "Docker": {
+        "required_level": 50,
+        "weight": 3
+      },
+      "Data Structures and Algorithms": {
+        "required_level": 55,
+        "weight": 2
+      }
+    }
+  },
+  "frontend_developer": {
+    "name": "Frontend Developer",
+    "requirements": {
+      "JavaScript": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "React": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "HTML": {
+        "required_level": 60,
+        "weight": 2
+      },
+      "CSS": {
+        "required_level": 60,
+        "weight": 2
+      },
+      "Git": {
+        "required_level": 50,
+        "weight": 2
+      }
+    }
+  },
+  "fullstack_developer": {
+    "name": "Full Stack Developer",
+    "requirements": {
+      "JavaScript": {
+        "required_level": 65,
+        "weight": 4
+      },
+      "React": {
+        "required_level": 60,
+        "weight": 3
+      },
+      "Node.js": {
+        "required_level": 60,
+        "weight": 4
+      },
+      "SQL": {
+        "required_level": 55,
+        "weight": 3
+      },
+      "Git": {
+        "required_level": 50,
+        "weight": 2
+      },
+      "Docker": {
+        "required_level": 45,
+        "weight": 2
+      }
+    }
+  },
+  "ui_ux_designer": {
+    "name": "UI/UX Designer",
+    "requirements": {
+      "UI/UX Design": {
+        "required_level": 70,
+        "weight": 5
+      },
+      "Prototyping": {
+        "required_level": 60,
+        "weight": 4
+      },
+      "Design Systems": {
+        "required_level": 55,
+        "weight": 3
+      }
+    }
+  }
+}

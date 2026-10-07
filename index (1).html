@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerLens — Evidence & Career Readiness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { body: ['DM Sans','sans-serif'], title: ['Space Grotesk','sans-serif'] },
+          colors: {
+            surface: '#080b10',
+            'surface-container-low': '#0d1118',
+            'surface-container': '#121722',
+            'surface-container-high': '#181e2a',
+            'surface-container-highest': '#202735',
+            'surface-container-lowest': '#0a0e14',
+            primary: '#dbe7ff',
+            'primary-container': '#26344d',
+            secondary: '#70a7ff',
+            'secondary-container': '#1c365f',
+            tertiary: '#8ce6c0',
+            'tertiary-container': '#123d31',
+            error: '#ff8a9b',
+            'error-container': '#55202a',
+            'on-surface': '#e8edf7',
+            'on-surface-variant': '#aab4c5',
+            outline: '#687487'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root{--surface:#080b10;--panel:#0d1118;--panel2:#121722;--panel3:#181e2a;--text:#e8edf7;--muted:#aab4c5;--accent:#70a7ff;--green:#8ce6c0;--red:#ff8a9b;}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif} body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -10%,rgba(112,167,255,.11),transparent 35%),radial-gradient(circle at 90% 60%,rgba(140,230,192,.035),transparent 30%);z-index:-1}.font-title{font-family:'Space Grotesk',sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}.app-shell{width:min(100%,760px);margin:0 auto}.view-panel{padding:22px 16px 112px}.hidden{display:none!important}.topbar{position:sticky;top:0;z-index:40;background:rgba(8,11,16,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}.card{background:rgba(10,14,20,.94);border:1px solid rgba(255,255,255,.065);box-shadow:0 10px 30px rgba(0,0,0,.18)}.soft{background:#0d1118;border:1px solid rgba(255,255,255,.055)}.input{width:100%;background:#0b0f16;color:var(--text);border:1px solid #2b3546;border-radius:10px;padding:10px 12px;outline:none}.input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(112,167,255,.12)}.btn-primary{background:#dbe7ff;color:#08101d}.btn-primary:hover{background:#fff}.btn-secondary{background:#70a7ff;color:#07101d}.btn-secondary:hover{filter:brightness(1.08)}.btn-dark{background:#151c28;color:#e8edf7;border:1px solid #2a3445}.progress{height:7px;border-radius:999px;background:#1a2230;overflow:hidden}.progress>div{height:100%;border-radius:inherit;background:#70a7ff}.skill-row{background:#0a0e14;border:1px solid rgba(255,255,255,.06)}.skill-row.selected{border:2px solid rgba(112,167,255,.4);background:#101722}.nav{border-top:1px solid rgba(255,255,255,.07);background:rgba(8,11,16,.94);backdrop-filter:blur(20px)}.nav a{color:#8792a5}.nav a.active{color:#70a7ff;font-weight:700}.dropzone{border:1px dashed #354158;background:#0b0f16}.dropzone:hover{border-color:#70a7ff;background:#101722}.metric{background:#0d1118;border:1px solid rgba(255,255,255,.06)}.tag{background:#151d2b;border:1px solid rgba(255,255,255,.06)}.radar-label{font-size:10px;fill:#dfe6f2;font-weight:600}.toast{display:flex;opacity:0;pointer-events:none;position:fixed;top:78px;left:50%;transform:translateX(-50%);z-index:100;background:#e8edf7;color:#08101d;border-radius:999px;padding:10px 16px;box-shadow:0 15px 40px rgba(0,0,0,.35);font-weight:700;display:none}.toast.show{display:flex;align-items:center;gap:8px}.section-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px}.small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="app-shell h-16 px-4 flex items-center justify-between">
+      <button onclick="navigateTo('profile-setup')" class="flex items-center gap-3 text-left" type="button">
+        <span class="w-9 h-9 rounded-xl flex items-center justify-center bg-secondary text-surface font-title font-bold">CL</span>
+        <span><span class="block font-title font-bold tracking-tight">CareerLens</span><span id="header-screen-title" class="block text-xs text-on-surface-variant">Profile Setup</span></span>
+      </button>
+      <span class="tag rounded-full px-3 py-1 text-[11px] text-on-surface-variant flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Verification Engine</span>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <!-- SCREEN 1 -->
+    <section id="view-profile-setup" class="view-panel space-y-6">
+      <div class="rounded-2xl p-6 card overflow-hidden relative">
+        <div class="absolute -right-16 -top-20 w-56 h-56 rounded-full bg-secondary/10 blur-3xl"></div>
+        <div class="relative">
+          <div class="inline-flex items-center gap-2 rounded-full tag px-3 py-1 text-xs text-secondary mb-4"><span class="material-symbols-outlined text-[16px]">biotech</span> AI Evidence Cross-Verification Engine</div>
+          <h1 class="font-title text-3xl font-bold leading-tight">Know what your resume claims — and what your work proves.</h1>
+          <p class="text-on-surface-variant mt-3 leading-relaxed">CareerLens cross-checks your resume against real digital evidence and maps verified competencies to a target role.</p>
+        </div>
+      </div>
+
+      <div class="card rounded-2xl p-5 space-y-5">
+        <div><label class="small uppercase tracking-wider">Target role</label><select id="role-select" class="input mt-2"><option selected value="ml">Machine Learning Engineer</option><option value="backend">Backend Developer</option><option value="frontend">Frontend Developer</option><option value="fullstack">Full Stack Developer</option><option value="data-analyst">Data Analyst</option><option value="data-scientist">Data Scientist</option><option value="ux">UI/UX Designer</option></select></div>
+        <div>
+          <div class="flex items-center justify-between mb-2"><span class="small uppercase tracking-wider">Resume</span><span class="text-xs text-secondary">PDF / DOCX / TXT</span></div>
+          <input id="resume-file-input" type="file" accept=".pdf,.docx,.txt" class="hidden">
+          <div id="resume-upload-zone" class="dropzone rounded-xl p-6 text-center cursor-pointer transition-colors">
+            <span class="material-symbols-outlined text-4xl text-secondary">upload_file</span>
+            <h3 class="font-title font-semibold mt-2" id="resume-filename">Upload your resume</h3>
+            <p class="text-sm text-on-surface-variant mt-1" id="resume-meta">Drop a file here or click to browse</p>
+            <button id="upload-resume-btn" type="button" class="btn-dark rounded-lg px-4 py-2 mt-4 text-sm">Choose Resume</button>
+            <p id="resume-status-text" class="text-xs text-on-surface-variant mt-3">Your resume is used for claims; external artifacts provide verification evidence.</p>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div><label class="small">GitHub URL</label><input id="github-url" class="input mt-1" placeholder="https://github.com/username"></div>
+          <div><label class="small">LeetCode URL</label><input id="leetcode-url" class="input mt-1" placeholder="https://leetcode.com/u/username/"></div>
+          <div><label class="small">LinkedIn URL</label><input id="linkedin-url" class="input mt-1" placeholder="https://linkedin.com/in/username"></div>
+          <div><label class="small">Figma file URL <span class="text-on-surface-variant">(optional)</span></label><input id="figma-url" class="input mt-1" placeholder="https://www.figma.com/design/FILE_KEY/... "></div>
+        </div>
+
+        <div class="soft rounded-xl p-4 flex items-start gap-3"><span class="material-symbols-outlined text-tertiary">verified_user</span><div><p class="font-semibold text-sm">Evidence-first verification</p><p class="text-xs text-on-surface-variant mt-1">A resume claim alone does not become verified. Strong evidence is weighted and corroborated across independent sources.</p></div></div>
+        <button id="analyze-btn" class="w-full h-12 rounded-xl btn-secondary font-title font-bold flex items-center justify-center gap-2 shadow-lg" type="button"><span class="material-symbols-outlined">analytics</span><span>Analyze My Career Profile</span></button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2 -->
+    <section id="view-profile-analysis" class="view-panel hidden space-y-5">
+      <div><span class="small uppercase tracking-wider text-secondary">Profile Intelligence</span><h1 class="font-title text-3xl font-bold mt-1">Your Profile Analysis</h1><p class="text-on-surface-variant mt-2">Evidence collected from connected sources and normalized for verification.</p></div>
+      <div class="grid grid-cols-2 gap-3"><div class="metric rounded-xl p-4"><span class="small">Target role</span><strong class="block mt-1 target-role-label">ML Engineer</strong></div><div class="metric rounded-xl p-4"><span class="small">Consistency</span><strong id="analysis-consistency" class="block mt-1">—</strong></div></div>
+      <div class="card rounded-2xl p-5"><div class="flex items-center justify-between"><div><span class="small">Readiness</span><div class="flex items-baseline gap-1"><strong id="analysis-score" class="font-title text-5xl">—</strong><span>%</span></div></div><span class="material-symbols-outlined text-4xl text-secondary">speed</span></div><div class="progress mt-4"><div id="analysis-score-bar" style="width:0%"></div></div></div>
+      <div class="card rounded-2xl p-5 space-y-3"><h2 class="section-title">Connected Sources</h2><div id="source-badges" class="flex flex-wrap gap-2"><span class="tag px-3 py-1 rounded-full text-xs">Resume</span><span class="tag px-3 py-1 rounded-full text-xs">GitHub</span><span class="tag px-3 py-1 rounded-full text-xs">LeetCode</span><span class="tag px-3 py-1 rounded-full text-xs">LinkedIn</span><span class="tag px-3 py-1 rounded-full text-xs">Figma</span></div></div>
+      <div class="grid grid-cols-2 gap-3"><div class="card rounded-xl p-4"><span class="small">Resume</span><p id="screen2-resume-meta" class="text-sm mt-2">Waiting for upload</p></div><div class="card rounded-xl p-4"><span class="small">Verified skills</span><p id="analysis-skill-count" class="font-title text-2xl font-bold mt-2">0</p></div></div>
+      <div class="card rounded-2xl p-5"><h2 class="section-title">Detected Skill Profile</h2><div id="analysis-skills" class="mt-4 flex flex-wrap gap-2"><span class="tag px-3 py-1.5 rounded-full text-xs text-on-surface-variant">Run analysis to populate</span></div><div class="soft rounded-xl p-3 mt-4 text-xs text-on-surface-variant">Confidence is calibrated from evidence strength and independent corroboration; it is not a statement of professional certification.</div></div>
+      <div class="flex gap-2"><button id="view-evidence-cta" class="flex-1 btn-secondary rounded-xl py-3 font-semibold" type="button">View Evidence</button><button id="force-sync-btn" class="btn-dark rounded-xl px-4" type="button"><span class="material-symbols-outlined">sync</span></button><button id="export-json-btn" class="btn-dark rounded-xl px-4" type="button"><span class="material-symbols-outlined">download</span></button></div>
+    </section>
+
+    <!-- SCREEN 3 -->
+    <section id="view-evidence-verification" class="view-panel hidden space-y-5">
+      <div><span class="small uppercase tracking-wider text-secondary">Claim vs Evidence</span><h1 class="font-title text-3xl font-bold mt-1">Evidence Verification</h1><p class="text-on-surface-variant mt-2">Audit each claimed competency against observable proof.</p></div>
+      <div class="card rounded-2xl p-5"><div class="flex justify-between items-center"><div><span class="small">Overall corroboration</span><strong id="corroboration-score" class="block font-title text-4xl">—%</strong></div><div class="w-20 h-20 rounded-full border-8 border-secondary/20 border-t-secondary flex items-center justify-center"><span class="material-symbols-outlined text-secondary">verified</span></div></div><div class="grid grid-cols-3 gap-2 mt-4 text-center"><div class="metric rounded-lg p-3"><strong id="verified-count">0</strong><span class="small block">Verified</span></div><div class="metric rounded-lg p-3"><strong id="partial-count">0</strong><span class="small block">Partial</span></div><div class="metric rounded-lg p-3"><strong id="unverified-count">0</strong><span class="small block">Unverified</span></div></div></div>
+      <div id="evidence-filter-container" class="flex gap-2 overflow-x-auto"><button class="filter-btn bg-secondary text-surface px-4 py-2 rounded-full text-xs font-bold" data-filter="all" onclick="setEvidenceFilter('all')">All</button><button class="filter-btn btn-dark px-4 py-2 rounded-full text-xs" data-filter="verified" onclick="setEvidenceFilter('verified')">Verified</button><button class="filter-btn btn-dark px-4 py-2 rounded-full text-xs" data-filter="partial" onclick="setEvidenceFilter('partial')">Partial</button><button class="filter-btn btn-dark px-4 py-2 rounded-full text-xs" data-filter="unverified" onclick="setEvidenceFilter('unverified')">Unverified</button></div>
+      <div id="skills-list" class="space-y-3">
+        <div class="skill-row rounded-xl p-4 cursor-pointer" data-skill-status="verified" id="row-python" onclick="selectSkill('Python')"><div class="flex justify-between"><div><span class="font-semibold">Python</span><span class="tag rounded-full px-2 py-1 ml-2 text-[11px]">Resume claim</span></div><span class="text-tertiary text-xs font-bold">Verified</span></div><div class="flex justify-between mt-2 text-xs text-on-surface-variant"><span>Awaiting live analysis</span><span>—</span></div><div class="progress mt-2"><div style="width:0%"></div></div></div>
+        <div class="skill-row rounded-xl p-4 cursor-pointer" data-skill-status="verified" id="row-ml" onclick="selectSkill('Machine Learning')"><div class="flex justify-between"><div><span class="font-semibold">Machine Learning</span><span class="tag rounded-full px-2 py-1 ml-2 text-[11px]">Resume claim</span></div><span class="text-tertiary text-xs font-bold">Verified</span></div><div class="flex justify-between mt-2 text-xs text-on-surface-variant"><span>Awaiting live analysis</span><span>—</span></div><div class="progress mt-2"><div style="width:0%"></div></div></div>
+        <div class="skill-row rounded-xl p-4 cursor-pointer" data-skill-status="partial" id="row-sql" onclick="selectSkill('SQL')"><div class="flex justify-between"><div><span class="font-semibold">SQL</span><span class="tag rounded-full px-2 py-1 ml-2 text-[11px]">Resume claim</span></div><span class="text-yellow-300 text-xs font-bold">Partial</span></div><div class="flex justify-between mt-2 text-xs text-on-surface-variant"><span>Awaiting live analysis</span><span>—</span></div><div class="progress mt-2"><div style="width:0%"></div></div></div>
+        <div class="skill-row rounded-xl p-4 cursor-pointer" data-skill-status="unverified" id="row-docker" onclick="selectSkill('Docker')"><div class="flex justify-between"><div><span class="font-semibold">Docker</span><span class="tag rounded-full px-2 py-1 ml-2 text-[11px]">Resume claim</span></div><span class="text-outline text-xs font-bold">Unverified</span></div><div class="flex justify-between mt-2 text-xs text-on-surface-variant"><span>No supporting evidence</span><span>—</span></div><div class="progress mt-2"><div style="width:0%;background:#687487"></div></div></div>
+        <div class="skill-row rounded-xl p-4 cursor-pointer" data-skill-status="verified" id="row-uiux" onclick="selectSkill('UI/UX Design')"><div class="flex justify-between"><div><span class="font-semibold">UI/UX Design</span><span class="tag rounded-full px-2 py-1 ml-2 text-[11px]">Portfolio</span></div><span class="text-tertiary text-xs font-bold">Verified</span></div><div class="flex justify-between mt-2 text-xs text-on-surface-variant"><span>Figma evidence</span><span>—</span></div><div class="progress mt-2"><div style="width:0%"></div></div></div>
+      </div>
+      <div id="inspector-card" class="rounded-2xl p-5 bg-[#111c2d] border border-secondary/20 shadow-xl space-y-4"><div class="flex justify-between gap-3"><div><div class="text-xs uppercase tracking-wider text-secondary">Auditor Inspector</div><h2 id="inspector-title" class="font-title text-xl font-bold mt-1">Select a skill</h2></div><span id="inspector-strength-badge" class="tag px-3 py-1 rounded-full h-fit text-xs">Awaiting evidence</span></div><div class="soft rounded-xl p-4 space-y-3"><div><span class="small">Corroborated Sources</span><p id="inspector-sources" class="text-sm mt-1">—</p></div><div><span class="small">Key Project / Activity Evidence</span><p id="inspector-activity" class="text-sm mt-1">—</p></div><div><span class="small">Why This Counts As Evidence</span><p id="inspector-rationale" class="text-sm mt-1 leading-relaxed">—</p></div></div><div class="flex justify-between items-center"><span id="inspector-level" class="text-xs text-on-surface-variant">Estimated level: —</span><button id="view-commits-btn" class="btn-dark rounded-lg px-3 py-2 text-xs" type="button">View Commits →</button></div></div>
+      <div class="card rounded-xl p-4"><div class="flex justify-between"><h3 class="font-title font-semibold">Verified Proof Artifacts</h3><span class="small">Live sources</span></div><div class="soft rounded-lg h-28 mt-3 flex items-center justify-center text-on-surface-variant text-sm"><span class="material-symbols-outlined mr-2">fact_check</span> Artifact snapshots appear after analysis.</div></div>
+      <button id="compare-target-role-btn" class="w-full btn-secondary rounded-xl py-3 font-semibold" type="button">Compare With Target Role →</button>
+    </section>
+
+    <!-- SCREEN 4 -->
+    <section id="view-role-readiness" class="view-panel hidden space-y-5">
+      <div><span class="small uppercase tracking-wider text-secondary">Placement Analytics Engine</span><h1 class="font-title text-3xl font-bold mt-1">Your Readiness for <span class="target-role-label">ML Engineer</span></h1><p class="text-on-surface-variant mt-2">Automated match evaluation based on verified competencies.</p></div>
+      <div class="card rounded-2xl p-6 text-center"><div class="flex justify-between text-xs text-on-surface-variant"><span>Tier-1 Placement Standard</span><span>Evidence calibrated</span></div><div class="relative w-48 h-48 mx-auto my-5"><svg viewBox="0 0 160 160" class="w-full h-full -rotate-90"><circle cx="80" cy="80" r="68" fill="transparent" stroke="#1a2230" stroke-width="12"/><circle id="readiness-ring" cx="80" cy="80" r="68" fill="transparent" stroke="#70a7ff" stroke-width="12" stroke-dasharray="427.25" stroke-dashoffset="427.25" stroke-linecap="round"/></svg><div class="absolute inset-0 flex flex-col items-center justify-center"><span id="readiness-score" class="font-title text-5xl font-bold">—%</span><span class="text-xs text-secondary uppercase tracking-widest">Match Score</span></div></div><div class="soft rounded-lg p-3 flex justify-between text-sm"><span>Target Role</span><strong class="target-role-label">ML Engineer</strong></div></div>
+      <div><div class="flex justify-between items-center mb-3"><h2 class="section-title">Core Pillars Breakdown</h2><span class="small">6 dimensions</span></div><div id="pillars-grid" class="grid grid-cols-2 gap-3"></div></div>
+      <div class="card rounded-2xl p-5"><h2 class="section-title">Competency Area Radar</h2><p class="small mt-1">Relative distribution of verified readiness signals.</p><div class="flex justify-center py-5"><svg viewBox="0 0 240 240" class="w-60 h-60"><polygon points="120,30 206,92 173,193 67,193 34,92" fill="none" stroke="#273142"/><polygon points="120,60 177,101 155,168 85,168 63,101" fill="none" stroke="#202938"/><line x1="120" y1="120" x2="120" y2="30" stroke="#273142"/><line x1="120" y1="120" x2="206" y2="92" stroke="#273142"/><line x1="120" y1="120" x2="173" y2="193" stroke="#273142"/><line x1="120" y1="120" x2="67" y2="193" stroke="#273142"/><line x1="120" y1="120" x2="34" y2="92" stroke="#273142"/><polygon id="radar-shape" points="120,50 175,102 150,165 90,158 65,105" fill="rgba(112,167,255,.18)" stroke="#70a7ff" stroke-width="2"/><text class="radar-label" text-anchor="middle" x="120" y="18">Foundations</text><text class="radar-label" x="211" y="95">Evidence</text><text class="radar-label" text-anchor="middle" x="177" y="211">Quality</text><text class="radar-label" text-anchor="middle" x="62" y="211">Activity</text><text class="radar-label" text-anchor="end" x="28" y="95">Coverage</text></svg></div><div class="soft rounded-lg p-3 text-sm text-on-surface-variant">The strongest actionable gaps are surfaced from role requirements and evidence coverage.</div></div>
+      <div class="card rounded-2xl p-5"><h2 class="section-title">Role Requirements vs Verified Profile</h2><p class="small mt-1">Prototype requirements from the local CareerLens role model.</p><div id="requirements-list" class="space-y-2 mt-4"></div></div>
+      <div class="card rounded-2xl p-5"><h2 class="section-title">Best-Fit Alternative Roles</h2><div class="space-y-2 mt-4"><div class="soft p-4 rounded-xl flex justify-between"><span>Data Analyst</span><strong>—</strong></div><div class="soft p-4 rounded-xl flex justify-between"><span>Data Scientist</span><strong>—</strong></div><div class="soft p-4 rounded-xl flex justify-between"><span>Backend Developer</span><strong>—</strong></div></div></div>
+      <div class="soft rounded-xl p-4 flex items-center gap-3"><span class="material-symbols-outlined text-secondary">trending_up</span><p class="text-sm flex-1">Close the highest-priority evidence gaps to improve role coverage.</p></div>
+      <button id="view-skill-gaps-btn" class="w-full btn-primary rounded-xl py-3 font-semibold" type="button">View My Skill Gaps →</button>
+    </section>
+
+    <!-- SCREEN 5 -->
+    <section id="view-skill-gaps" class="view-panel hidden space-y-5">
+      <div><span class="small uppercase tracking-wider text-secondary">Gap Diagnostic</span><h1 class="font-title text-3xl font-bold mt-1">What Stands Between You and Your Target Role?</h1><p class="text-on-surface-variant mt-2">Identified competency and evidence deficits for <span class="target-role-label">ML Engineer</span>.</p></div>
+      <div class="card rounded-2xl p-5"><div class="flex justify-between"><div><span class="small">Current Match</span><strong id="gap-score" class="block font-title text-4xl">—%</strong></div><div class="text-right"><span class="small">Target</span><strong class="block font-title text-2xl text-secondary">100%</strong></div></div><div class="progress mt-4"><div id="gap-score-bar" style="width:0%"></div></div><p class="small mt-3">100% means full competency coverage for the selected CareerLens role profile, not guaranteed employability.</p></div>
+      <div class="flex gap-2 overflow-x-auto"><button id="filter-all" class="btn-primary rounded-full px-4 py-2 text-xs" onclick="applyGapFilter('all')">All</button><button id="filter-high" class="btn-dark rounded-full px-4 py-2 text-xs" onclick="applyGapFilter('high')">High</button><button id="filter-med" class="btn-dark rounded-full px-4 py-2 text-xs" onclick="applyGapFilter('med')">Medium</button><button id="filter-low" class="btn-dark rounded-full px-4 py-2 text-xs" onclick="applyGapFilter('low')">Low</button></div>
+      <div class="gap-group-container space-y-3" data-priority="high"><h2 class="section-title">High Priority</h2><article class="gap-card card rounded-xl p-5 space-y-3" data-priority="high"><div class="flex justify-between"><div><h3 class="font-title text-lg font-bold">Docker</h3><span class="small">Unverified → Intermediate</span></div><span class="text-red-300 text-xs font-bold">Core Blocker</span></div><p class="text-sm text-on-surface-variant">Commonly required for containerized ML/backend deployment. Proof target: commit a valid Dockerfile and build instructions.</p><div class="soft rounded-lg p-3 flex justify-between text-xs"><span>Estimated impact</span><strong class="text-secondary">+5.0%</strong></div></article><article class="gap-card card rounded-xl p-5 space-y-3" data-priority="high"><div class="flex justify-between"><div><h3 class="font-title text-lg font-bold">Deployment</h3><span class="small">Weak → Intermediate</span></div><span class="text-red-300 text-xs font-bold">Core Blocker</span></div><p class="text-sm text-on-surface-variant">Show practical proof through a deployed FastAPI/Flask inference endpoint.</p><div class="soft rounded-lg p-3 flex justify-between text-xs"><span>Estimated impact</span><strong class="text-secondary">+6.5%</strong></div></article></div>
+      <div class="gap-group-container space-y-3" data-priority="med"><h2 class="section-title">Medium Priority</h2><article class="gap-card card rounded-xl p-5 space-y-3" data-priority="med"><div class="flex justify-between"><div><h3 class="font-title text-lg font-bold">Deep Learning</h3><span class="small">Beginner → Intermediate</span></div><span class="text-yellow-200 text-xs font-bold">Competency Gap</span></div><p class="text-sm text-on-surface-variant">Strengthen PyTorch evidence with a custom training loop and metrics logging.</p><div class="soft rounded-lg p-3 flex justify-between text-xs"><span>Estimated impact</span><strong class="text-secondary">+4.5%</strong></div></article></div>
+      <div class="gap-group-container space-y-3" data-priority="low"><h2 class="section-title">Low Priority</h2><article class="gap-card card rounded-xl p-5 space-y-3" data-priority="low"><div class="flex justify-between"><div><h3 class="font-title text-lg font-bold">MLOps</h3><span class="small">Missing → Preferred</span></div><span class="text-on-surface-variant text-xs font-bold">Differentiator</span></div><p class="text-sm text-on-surface-variant">Add GitHub Actions, model/data versioning, or registry evidence.</p><div class="soft rounded-lg p-3 flex justify-between text-xs"><span>Estimated impact</span><strong class="text-secondary">+3.0%</strong></div></article></div>
+      <button id="build-roadmap-btn" class="w-full btn-secondary rounded-xl py-3 font-semibold" type="button">Build My Roadmap →</button>
+    </section>
+
+    <!-- SCREEN 6 -->
+    <section id="view-career-roadmap" class="view-panel hidden space-y-5">
+      <div><span class="small uppercase tracking-wider text-secondary">Algorithmic Projection</span><h1 class="font-title text-3xl font-bold mt-1">Your Path Toward Full Role Readiness</h1><p class="text-on-surface-variant mt-2">Every recommendation is connected to an identified skill or evidence gap.</p></div>
+      <div class="card rounded-2xl p-5"><div class="flex justify-between"><div><span class="small">Target Role Benchmark</span><p class="font-title font-bold target-role-label">ML Engineer</p></div><span class="tag rounded px-2 py-1 text-xs">Projected</span></div><div class="grid grid-cols-2 gap-3 mt-4"><div class="soft rounded-xl p-4"><span class="small">Current</span><strong id="roadmap-current-score" class="block font-title text-3xl mt-1">—%</strong></div><div class="soft rounded-xl p-4"><span class="small text-secondary">Projected</span><strong class="block font-title text-3xl text-secondary mt-1">90%+</strong></div></div><p class="small mt-3">Projection assumes completion and verification of the identified roadmap evidence.</p></div>
+      <div class="grid grid-cols-3 gap-2"><div class="metric rounded-xl p-3 text-center"><span class="small">Milestones</span><strong class="block mt-1">5</strong></div><div class="metric rounded-xl p-3 text-center"><span class="small">Active</span><strong class="block mt-1 text-secondary">1</strong></div><div class="metric rounded-xl p-3 text-center"><span class="small">Cadence</span><strong class="block mt-1">4–6w</strong></div></div>
+      <div class="relative space-y-3"><div class="absolute left-4 top-4 bottom-4 w-px bg-surface-container-high"></div>
+        <div class="relative flex gap-3"><div class="z-10 w-8 h-8 rounded-full bg-secondary text-surface flex items-center justify-center font-bold">1</div><div class="card rounded-xl p-4 flex-1"><span class="small text-secondary">Step 1 — Learn</span><h3 class="font-title font-bold mt-1">Master Docker Fundamentals</h3><p class="text-sm text-on-surface-variant mt-2">Build practical containerization knowledge covering images, volumes, networking and multi-stage builds.</p><div class="tag rounded px-2 py-1 inline-block text-xs mt-3">+5.0% impact</div></div></div>
+        <div class="relative flex gap-3"><div class="z-10 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-bold">2</div><div class="card rounded-xl p-4 flex-1"><span class="small">Step 2 — Apply</span><h3 class="font-title font-bold mt-1">Containerize Existing ML Project</h3><p class="text-sm text-on-surface-variant mt-2">Add Dockerfile, reproducible dependencies and a public proof artifact.</p><div class="tag rounded px-2 py-1 inline-block text-xs mt-3">+5.5% impact</div></div></div>
+        <div class="relative flex gap-3"><div class="z-10 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-bold">3</div><div class="card rounded-xl p-4 flex-1"><span class="small">Step 3 — Build</span><h3 class="font-title font-bold mt-1">Deploy the ML Model as an API</h3><p class="text-sm text-on-surface-variant mt-2">Expose inference through FastAPI/Flask and publish a live endpoint or API documentation.</p><div class="tag rounded px-2 py-1 inline-block text-xs mt-3">+6.5% impact</div></div></div>
+        <div class="relative flex gap-3"><div class="z-10 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-bold">4</div><div class="card rounded-xl p-4 flex-1"><span class="small">Step 4 — Strengthen</span><h3 class="font-title font-bold mt-1">Add CI/CD or Basic MLOps Workflow</h3><p class="text-sm text-on-surface-variant mt-2">Automate linting, tests and Docker builds with GitHub Actions.</p><div class="tag rounded px-2 py-1 inline-block text-xs mt-3">+3.5% impact</div></div></div>
+        <div class="relative flex gap-3"><div class="z-10 w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center font-bold">5</div><div class="card rounded-xl p-4 flex-1"><span class="small">Step 5 — Re-evaluate</span><h3 class="font-title font-bold mt-1">Synchronize & Recalibrate Profile</h3><p class="text-sm text-on-surface-variant mt-2">Publish the new artifacts and trigger a fresh CareerLens audit.</p><div class="tag rounded px-2 py-1 inline-block text-xs mt-3">Final verification audit</div></div></div>
+      </div>
+      <div class="soft rounded-xl p-4"><div class="flex justify-between"><span class="font-semibold text-sm">Weekly Execution Commitment</span><span id="hours-display" class="text-secondary font-bold text-sm">8 hrs / week</span></div><input id="commitment-slider" class="w-full mt-4 accent-secondary" max="20" min="4" step="2" type="range" value="8"><div class="flex justify-between text-xs text-on-surface-variant mt-1"><span>4h</span><span>8h</span><span>20h</span></div></div>
+      <div class="space-y-2"><button id="track-btn" class="w-full btn-primary rounded-xl py-3 font-semibold" type="button"><span class="material-symbols-outlined align-middle mr-1">play_circle</span>Track Progress & Set Milestones</button><button id="export-btn" class="w-full btn-dark rounded-xl py-3 font-semibold" type="button"><span class="material-symbols-outlined align-middle mr-1">ios_share</span>Export Roadmap</button></div>
+    </section>
+  </main>
+
+  <nav class="nav fixed bottom-0 w-full z-50"><div class="app-shell"><div class="h-16 px-1 flex items-center overflow-x-auto"><a data-path="profile-setup" href="#profile-setup" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">account_circle</span>Setup</a><a data-path="profile-analysis" href="#profile-analysis" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">analytics</span>Analysis</a><a data-path="evidence-verification" href="#evidence-verification" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">verified</span>Evidence</a><a data-path="role-readiness" href="#role-readiness" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">speed</span>Readiness</a><a data-path="skill-gaps" href="#skill-gaps" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">published_with_changes</span>Gaps</a><a data-path="career-roadmap" href="#career-roadmap" class="flex-1 min-w-[64px] text-center text-xs"><span class="material-symbols-outlined block text-[20px]">conversion_path</span>Roadmap</a></div><div class="text-center text-[10px] text-on-surface-variant py-1 bg-surface-container-low">Verified University Career & Placement Analytics Platform</div></div></nav>
+
+  <div id="app-toast" class="toast"><span class="material-symbols-outlined">check_circle</span><span id="app-toast-text"></span></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Person 4 integration layer: connects real backend output to the dark UI without replacing the source app controller.
+    (function(){
+      const roleLabels={ml:'ML Engineer',backend:'Backend Developer',frontend:'Frontend Developer',fullstack:'Full Stack Developer','data-analyst':'Data Analyst','data-scientist':'Data Scientist',ux:'UI/UX Designer'};
+      const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+      const setText=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+      function updateUI(e){
+        const a=e.detail?.analysis;if(!a)return;
+        const score=Math.round(Number(a.readiness_score)||0); const corr=Math.round(Number(a.corroboration_score)||0);
+        setText('analysis-score',score);setText('readiness-score',score+'%');setText('gap-score',score+'%');setText('roadmap-current-score',score+'%');setText('corroboration-score',corr+'%');
+        setText('analysis-skill-count',(a.verified_skills||[]).length);
+        setText('analysis-consistency',corr>=75?'Strong':corr>=50?'Moderate':'Needs evidence');
+        const bar=document.getElementById('analysis-score-bar');if(bar)bar.style.width=score+'%';
+        const gap=document.getElementById('gap-score-bar');if(gap)gap.style.width=score+'%';
+        const ring=document.getElementById('readiness-ring');if(ring)ring.style.strokeDashoffset=427.25-(427.25*score/100);
+        document.querySelectorAll('.target-role-label').forEach(x=>x.textContent=a.role_name||a.target_role||'Target Role');
+        const skills=a.verified_skills||[]; const counts={Verified:0,'Partially Verified':0,'Unverified':0};
+        skills.forEach(s=>{if(counts[s.status]!==undefined)counts[s.status]++});setText('verified-count',counts.Verified);setText('partial-count',counts['Partially Verified']);setText('unverified-count',counts.Unverified);
+        const tags=document.getElementById('analysis-skills');if(tags)tags.innerHTML=skills.map(s=>`<span class="tag px-3 py-1.5 rounded-full text-xs">${esc(s.skill)} · ${Math.round(s.confidence||0)}%</span>`).join('')||'<span class="tag px-3 py-1.5 rounded-full text-xs">No verified skills returned</span>';
+        const pillars=a.pillars||{};const pg=document.getElementById('pillars-grid');
+        if(pg){const names=[['tech_skills','Technical Skill Match'],['evidence','Evidence Strength'],['quality','Project Quality'],['activity','Domain Activity'],['consistency','Consistency'],['coverage','Role Coverage']];pg.innerHTML=names.map(([k,n])=>{const v=Math.round(Number(pillars[k])||0);return `<div class="metric rounded-xl p-4"><div class="flex justify-between"><span class="material-symbols-outlined text-secondary">analytics</span><strong>${v}%</strong></div><span class="text-xs text-on-surface-variant block mt-2">${n}</span><div class="progress mt-3"><div style="width:${v}%"></div></div></div>`}).join('')}
+        const req=document.getElementById('requirements-list');if(req){const r=a.requirements||{};const skillsBy=new Map(skills.map(x=>[String(x.skill).toLowerCase(),x]));req.innerHTML=Object.entries(r).map(([name,cfg])=>{const item=skillsBy.get(name.toLowerCase());const current=Math.round(item?.confidence||0);const required=Number(cfg.required_level??cfg);const match=Math.min(100,Math.round(current/Math.max(required,1)*100));return `<div class="soft rounded-lg p-3"><div class="flex justify-between"><span class="font-semibold text-sm">${esc(name)}</span><span class="text-xs ${match>=90?'text-tertiary':'text-secondary'}">${match}%</span></div><div class="flex justify-between text-xs text-on-surface-variant mt-1"><span>Required: ${required}</span><span>Verified: ${current}</span></div><div class="progress mt-2"><div style="width:${Math.min(match,100)}%"></div></div></div>`}).join('')}
+        // Refresh evidence rows from returned verification data.
+        skills.forEach(s=>{const key=String(s.skill).toLowerCase();let id=key==='machine learning'?'row-ml':key==='ui/ux design'?'row-uiux':'row-'+key.replace(/[^a-z0-9]/g,'');const row=document.getElementById(id);if(!row)return;row.dataset.skillStatus=s.status==='Partially Verified'?'partial':s.status==='Unverified'?'unverified':'verified';const pct=Math.round(s.confidence||0);const p=row.querySelector('.progress>div');if(p){p.style.width=pct+'%'}const sub=row.querySelector('.flex.justify-between.mt-2 span');if(sub)sub.textContent=(s.sources||[]).join(' + ')||'Resume only';const last=row.querySelector('.flex.justify-between.mt-2 span:last-child');if(last)last.textContent=pct+'%';});
+      }
+      window.addEventListener('careerlens:analysis-ready',updateUI);
+      const role=document.getElementById('role-select');if(role)role.addEventListener('change',()=>{document.querySelectorAll('.target-role-label').forEach(x=>x.textContent=roleLabels[role.value]||role.value)});
+      // Save editable profile links for the existing data bridge.
+      const originalAnalyze=window.CareerLensAPI?.analyzeProfile;if(originalAnalyze){const api=window.CareerLensAPI;api.analyzeProfile=async function(fd){['github','leetcode','linkedin','figma'].forEach(k=>{const el=document.getElementById(k+'-url');if(el)fd.set(k+'_url',el.value.trim())});return originalAnalyze(fd)}}
+    })();
+  </script>
+</body>
+</html>

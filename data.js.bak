@@ -1,0 +1,146 @@
+/*
+ * CareerLens backend data bridge.
+ *
+ * Load this file before app.js.
+ * It preserves the existing global name used by the frontend while adding
+ * real Person 4 results.
+ */
+
+(function () {
+  "use strict";
+
+  const API_BASE = window.CAREERLENS_API_BASE || "http://localhost:8000";
+
+  window.careerLensData = window.careerLensData || {
+    candidate: {},
+    evidenceSkills: {},
+    analysis: {},
+    sources: {},
+    // Edit these URLs to the candidate's actual public profiles.
+    profileLinks: {
+      github_url: '',
+      leetcode_url: '',
+      linkedin_url: '',
+      figma_url: ''
+    }
+  };
+
+  function badgeForStatus(status) {
+    switch (status) {
+      case "Verified":
+        return {
+          badgeText: "Verified",
+          badgeClass: "bg-tertiary-container text-tertiary-fixed"
+        };
+      case "Partially Verified":
+        return {
+          badgeText: "Partial",
+          badgeClass: "bg-secondary-container text-on-secondary"
+        };
+      case "Evidence Found":
+        return {
+          badgeText: "Evidence Found",
+          badgeClass: "bg-secondary-container text-on-secondary"
+        };
+      default:
+        return {
+          badgeText: "Unverified",
+          badgeClass: "bg-error-container text-on-error-container"
+        };
+    }
+  }
+
+  function evidenceActivity(item) {
+    const evidence = item.evidence || [];
+    if (!evidence.length) return "No independent digital evidence found.";
+
+    return evidence.map(function (entry) {
+      return `${entry.source}: ${entry.reason || "Evidence recorded."}`;
+    }).join(" • ");
+  }
+
+  function evidenceSources(item) {
+    return (item.sources || []).join(" • ") || "Resume only";
+  }
+
+  function toEvidenceSkills(verifiedSkills) {
+    const result = {};
+
+    (verifiedSkills || []).forEach(function (item) {
+      const badge = badgeForStatus(item.status);
+
+      result[item.skill] = {
+        title: item.skill,
+        badgeText: badge.badgeText,
+        badgeClass: badge.badgeClass,
+        sources: evidenceSources(item),
+        activity: evidenceActivity(item),
+        rationale: item.evidence && item.evidence.length
+          ? item.evidence.map(function (e) {
+              return e.reason || "";
+            }).filter(Boolean).join(" ")
+          : "This skill appears only as a resume claim.",
+        level: `${item.confidence}% confidence`,
+        status: item.status,
+        confidence: item.confidence,
+        raw: item
+      };
+    });
+
+    return result;
+  }
+
+  function applyAnalysis(response) {
+    if (!response || !response.analysis) return;
+
+    const analysis = response.analysis;
+
+    window.careerLensData.analysis = analysis;
+    window.careerLensData.sources = response.sources || {};
+    window.careerLensData.evidenceSkills =
+      toEvidenceSkills(analysis.verified_skills || []);
+
+    window.careerLensData.candidate =
+      window.careerLensData.candidate || {};
+
+    window.careerLensData.candidate.targetRole =
+      analysis.role_name || analysis.target_role;
+
+    window.careerLensData.candidate.readinessScore =
+      analysis.readiness_score;
+
+    window.careerLensData.candidate.corroborationScore =
+      analysis.corroboration_score;
+
+    window.dispatchEvent(
+      new CustomEvent("careerlens:analysis-ready", {
+        detail: response
+      })
+    );
+  }
+
+  async function analyzeProfile(formData) {
+    const response = await fetch(
+      `${API_BASE}/api/analyze-profile`,
+      {
+        method: "POST",
+        body: formData
+      }
+    );
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || `Backend returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    applyAnalysis(data);
+    return data;
+  }
+
+  window.CareerLensAPI = {
+    baseUrl: API_BASE,
+    analyzeProfile,
+    applyAnalysis
+  };
+})();
