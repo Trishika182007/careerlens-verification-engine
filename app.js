@@ -924,7 +924,7 @@ if (analyzeBtn) {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/analyze-profile',
+        'https://careerlens-verification-engine.onrender.com/api/analyze-profile',
         {
           method: 'POST',
           body: formData
